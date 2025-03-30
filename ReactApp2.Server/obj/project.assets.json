@@ -484,9 +484,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\ReactApp2.Server.csproj",
-      "projectName": "ReactApp2.Server",
-      "projectPath": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\ReactApp2.Server.csproj",
+      "projectUniqueName": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Resume QR Code Verification SystemServer.csproj",
+      "projectName": "Resume QR Code Verification SystemServer",
+      "projectPath": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Resume QR Code Verification SystemServer.csproj",
       "packagesPath": "C:\\Users\\crafty\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\obj\\",
       "projectStyle": "PackageReference",

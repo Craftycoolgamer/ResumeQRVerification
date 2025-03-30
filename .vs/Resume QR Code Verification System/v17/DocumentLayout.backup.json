@@ -1,17 +1,17 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\crafty\\Desktop\\ReactApp2\\",
+  "WorkspaceRootPath": "C:\\Users\\crafty\\Desktop\\D424\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\reactapp2.client.esproj|c:\\users\\crafty\\desktop\\reactapp2\\reactapp2.client\\src\\fileupload.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "AbsoluteMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\reactapp2.client.esproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.client\\src\\fileupload.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\reactapp2.client.esproj|solutionrelative:reactapp2.client\\src\\fileupload.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\reactapp2.client.esproj|c:\\users\\crafty\\desktop\\reactapp2\\reactapp2.client\\src\\main.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "AbsoluteMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\reactapp2.client.esproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.client\\src\\main.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\reactapp2.client.esproj|solutionrelative:reactapp2.client\\src\\main.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\reactapp2.client.esproj|c:\\users\\crafty\\desktop\\reactapp2\\reactapp2.client\\src\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "AbsoluteMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\reactapp2.client.esproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.client\\src\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\reactapp2.client.esproj|solutionrelative:reactapp2.client\\src\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     }
   ],
@@ -36,9 +36,9 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "main.jsx",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\ReactApp2\\reactapp2.client\\src\\main.jsx",
+              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\main.jsx",
               "RelativeDocumentMoniker": "reactapp2.client\\src\\main.jsx",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\ReactApp2\\reactapp2.client\\src\\main.jsx",
+              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\main.jsx",
               "RelativeToolTip": "reactapp2.client\\src\\main.jsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
@@ -49,9 +49,9 @@
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "main.css",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\ReactApp2\\reactapp2.client\\src\\main.css",
+              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\main.css",
               "RelativeDocumentMoniker": "reactapp2.client\\src\\main.css",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\ReactApp2\\reactapp2.client\\src\\main.css",
+              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\main.css",
               "RelativeToolTip": "reactapp2.client\\src\\main.css",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
@@ -62,11 +62,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "fileUpload.jsx",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\ReactApp2\\reactapp2.client\\src\\fileUpload.jsx",
+              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\fileUpload.jsx",
               "RelativeDocumentMoniker": "reactapp2.client\\src\\fileUpload.jsx",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\ReactApp2\\reactapp2.client\\src\\fileUpload.jsx",
+              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\fileUpload.jsx",
               "RelativeToolTip": "reactapp2.client\\src\\fileUpload.jsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
               "WhenOpened": "2025-03-29T22:39:53.748Z",
               "EditorCaption": ""

@@ -3,12 +3,12 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "ReactApp2.Server\\ReactApp2.Server.csproj",
+        "Path": "ReactApp2.Server\\Resume QR Code Verification SystemServer.csproj",
         "Action": "StartWithoutDebugging",
         "DebugTarget": "https"
       },
       {
-        "Path": "reactapp2.client\\reactapp2.client.esproj",
+        "Path": "reactapp2.client\\Resume QR Code Verification System.client.esproj",
         "Action": "Start",
         "DebugTarget": "localhost (Chrome)"
       }

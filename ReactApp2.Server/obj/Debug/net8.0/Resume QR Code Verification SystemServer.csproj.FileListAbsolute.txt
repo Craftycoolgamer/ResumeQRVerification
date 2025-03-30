@@ -1,0 +1,40 @@
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\spa.proxy.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\appsettings.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Resume QR Code Verification SystemServer.staticwebassets.endpoints.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Resume QR Code Verification SystemServer.exe
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Resume QR Code Verification SystemServer.deps.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Resume QR Code Verification SystemServer.runtimeconfig.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Resume QR Code Verification SystemServer.dll
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Resume QR Code Verification SystemServer.pdb
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Microsoft.AspNetCore.SpaProxy.dll
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.csproj.AssemblyReference.cache
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\spa.proxy.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.AssemblyInfoInputs.cache
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.AssemblyInfo.cs
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.csproj.CoreCompileInputs.cache
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.sourcelink.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\scopedcss\bundle\Resume QR Code Verification SystemServer.styles.css
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets\msbuild.Resume QR Code Verification SystemServer.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets\msbuild.Resume QR Code Verification SystemServer.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets\msbuild.build.Resume QR Code Verification SystemServer.props
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Resume QR Code Verification SystemServer.props
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Resume QR Code Verification SystemServer.props
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume Q.6ED7C082.Up2Date
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.dll
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\refint\Resume QR Code Verification SystemServer.dll
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.pdb
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification SystemServer.genruntimeconfig.cache
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\ref\Resume QR Code Verification SystemServer.dll

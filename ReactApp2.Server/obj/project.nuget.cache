@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "k0tM9yrN7iY=",
+  "dgSpecHash": "1Fph+L6cHGk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\ReactApp2.Server.csproj",
+  "projectFilePath": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Resume QR Code Verification SystemServer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\crafty\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\8.0.14\\microsoft.aspnetcore.spaproxy.8.0.14.nupkg.sha512",
     "C:\\Users\\crafty\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

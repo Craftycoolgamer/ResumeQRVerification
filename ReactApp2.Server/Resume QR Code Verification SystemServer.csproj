@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\reactapp2.client\reactapp2.client.esproj">
+    <ProjectReference Include="..\reactapp2.client\Resume QR Code Verification System.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

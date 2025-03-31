@@ -7,7 +7,7 @@
   "type": "chrome",
   "request": "launch",
   "url": "https://localhost:62569",
-  "webRoot": "C:\\Users\\crafty\\Desktop\\ReactApp2\\reactapp2.client"
+  "webRoot": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client"
 }</LaunchJsonTarget>
   </PropertyGroup>
 </Project>

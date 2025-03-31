@@ -1,4 +1,4 @@
-namespace ReactApp2.Server
+namespace Resume_QR_Code_Verification_System.Server
 {
     public class WeatherForecast
     {

@@ -1,29 +1,30 @@
 import React, { useState, useCallback } from "react";
+import axios from 'axios';
 import styled from "styled-components";
+
 
 const FileUploadDropArea = () => {
     const [file, setFile] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
-    const [uploadStatus, setUploadStatus] = useState(null); // 'uploading', 'success', 'error'
+    const [uploadStatus, setUploadStatus] = useState(null);
+    const [description, setDescription] = useState("");
 
+    // Drag and drop handlers
     const handleDragEnter = useCallback((e) => {
         e.preventDefault();
         e.stopPropagation();
         setIsDragging(true);
     }, []);
-
     const handleDragLeave = useCallback((e) => {
         e.preventDefault();
         e.stopPropagation();
         setIsDragging(false);
     }, []);
-
     const handleDragOver = useCallback((e) => {
         e.preventDefault();
         e.stopPropagation();
     }, []);
-
     const handleDrop = useCallback((e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -34,54 +35,85 @@ const FileUploadDropArea = () => {
             e.dataTransfer.clearData();
         }
     }, []);
-
     const handleFileChange = useCallback((e) => {
         if (e.target.files && e.target.files.length > 0) {
             setFile(e.target.files[0]);
         }
     }, []);
-
     const handleCancel = useCallback(() => {
         setFile(null);
         setUploadProgress(0);
         setUploadStatus(null);
     }, []);
 
-    const handleUpload = useCallback(async () => {
+    //Example Code
+    //const createProduct = async () => {
+    //    const newProduct = { name: "Laptop", price: 999 }; // Plain JS object
+    //    await axios.post("https://api.yoursite.com/products", newProduct); // Sends JSON
+    //};
+    
+
+    const handleUpload = useCallback(async (e) => {
+
+        axios.get('https://localhost:7219/test')
+            .then(r => console.log(r.data))
+
+
         if (!file) return;
+        e.preventDefault();
 
         setUploadStatus('uploading');
         setUploadProgress(0);
 
-        const formData = new FormData();
-        formData.append('file', file);
+        const UploadData = new FormData();
+        UploadData.append('file', file);
+        UploadData.append('fileName', file.name);
+        UploadData.append('fileSize', file.size.toString());
+        UploadData.append('contentType', file.type);
+        UploadData.append('description', description);
 
         try {
-            // Replace with your actual backend API endpoint
-            const response = await fetch('https://your-backend-api.com/upload', {
-                method: 'POST',
-                body: formData,
+            // Send data to backend (matches UploadCreateDto structure)
+            const API_URL = 'https://localhost:7219/files'; 
+            await axios.post(API_URL, UploadData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
                 onUploadProgress: (progressEvent) => {
                     const percentCompleted = Math.round(
                         (progressEvent.loaded * 100) / progressEvent.total
                     );
                     setUploadProgress(percentCompleted);
-                },
+                }
             });
 
-            if (response.ok) {
-                setUploadStatus('success');
-                // You might want to do something with the response here
-                const data = await response.json();
-                console.log('Upload successful:', data);
-            } else {
-                throw new Error('Upload failed');
-            }
+            setUploadStatus('success');
+            setFile(null);
+            setDescription("");
         } catch (error) {
-            console.error('Upload error:', error);
+            //console.error('Upload error:', error.response);
+            alert('Failed to upload');
+            //setUploadStatus('error');
+
+            //console.error('Upload error:', error);
             setUploadStatus('error');
+
+            // Display more specific error message
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                console.error('Server responded with:', error.response.status);
+                console.error('Response data:', error.response.data);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.error('No response received:', error.request);
+            } else {
+                // Something happened in setting up the request
+                console.error('Request setup error:', error.message);
+            }
+
+
         }
-    }, [file]);
+    }, [file, description]);
 
     return (
         <Container>
@@ -113,6 +145,14 @@ const FileUploadDropArea = () => {
                 </DropZone>
             </DropZoneContainer>
 
+            {file && (
+                <DescriptionInput
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Enter file description..."
+                />
+            )}
+
             {uploadStatus === 'uploading' && (
                 <ProgressBar>
                     <ProgressFill progress={uploadProgress} />
@@ -138,6 +178,7 @@ const FileUploadDropArea = () => {
     );
 };
 
+
 // Styled components
 const Container = styled.div`
   display: flex;
@@ -151,19 +192,16 @@ const Container = styled.div`
   width: 300px;
   font-family: Arial, sans-serif;
 `;
-
 const Title = styled.div`
   font-size: 16px;
   margin-bottom: 20px;
   color: #333;
 `;
-
 const DropZoneContainer = styled.div`
   width: 100%;
   padding: 2px; /* This creates space for the border without affecting width */
   margin-bottom: 20px;
 `;
-
 const DropZone = styled.div`
   border: 2px dashed ${props => props.isDragging ? '#999' : '#ccc'};
   border-radius: 4px;
@@ -177,28 +215,23 @@ const DropZone = styled.div`
   transition: all 0.2s ease;
   box-sizing: border-box; /* Ensures padding is included in width calculation */
 `;
-
 const FileInfo = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
 const FileName = styled.span`
   font-weight: bold;
   margin-bottom: 5px;
   word-break: break-word;
 `;
-
 const FileSize = styled.span`
   font-size: 12px;
   color: #888;
 `;
-
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
 `;
-
 const UploadButton = styled.button`
   background-color: #4CAF50;
   color: white;
@@ -210,7 +243,6 @@ const UploadButton = styled.button`
     background-color: #45a049;
   }
 `;
-
 const CancelButton = styled.button`
   background: none;
   border: none;
@@ -221,7 +253,6 @@ const CancelButton = styled.button`
     color: #333;
   }
 `;
-
 const ProgressBar = styled.div`
   width: 100%;
   height: 20px;
@@ -231,14 +262,12 @@ const ProgressBar = styled.div`
   position: relative;
   overflow: hidden;
 `;
-
 const ProgressFill = styled.div`
   width: ${props => props.progress}%;
   height: 100%;
   background-color: #4CAF50;
   transition: width 0.3s ease;
 `;
-
 const ProgressText = styled.span`
   position: absolute;
   top: 50%;
@@ -247,11 +276,20 @@ const ProgressText = styled.span`
   color: #333;
   font-size: 12px;
 `;
-
 const StatusMessage = styled.div`
   margin-bottom: 20px;
   color: ${props => props.success ? '#4CAF50' : '#f44336'};
   font-size: 14px;
 `;
+const DescriptionInput = styled.textarea`
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-height: 60px;
+  font-family: Arial, sans-serif;
+`;
+
 
 export default FileUploadDropArea;

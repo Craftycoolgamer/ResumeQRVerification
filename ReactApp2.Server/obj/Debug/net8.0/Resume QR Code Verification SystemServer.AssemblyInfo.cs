@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Resume QR Code Verification SystemServer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d30190cba53776f33ca8c49c015005ce9f0f44e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4fffb1fdff34307778531095c66e7d72aed0027e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Resume QR Code Verification SystemServer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Resume QR Code Verification SystemServer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

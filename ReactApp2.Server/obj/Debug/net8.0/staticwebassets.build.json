@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "FjwXQl0zKzlQv+cnixRK57MkRZSTh0tGu4ksKRclY1w=",
-  "Source": "Resume QR Code Verification SystemServer",
-  "BasePath": "_content/Resume QR Code Verification SystemServer",
+  "Hash": "51pMQ4tgb0aLJwo0qwIoToH+qZfF1quErBLR9HzZ1KE=",
+  "Source": "Resume QR Code Verification System.Server",
+  "BasePath": "_content/Resume QR Code Verification System.Server",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [

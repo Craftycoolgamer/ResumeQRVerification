@@ -3,7 +3,7 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "ReactApp2.Server\\Resume QR Code Verification SystemServer.csproj",
+        "Path": "ReactApp2.Server\\Resume QR Code Verification System.Server.csproj",
         "Action": "StartWithoutDebugging",
         "DebugTarget": "https"
       },

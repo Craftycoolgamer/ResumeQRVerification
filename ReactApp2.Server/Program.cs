@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Resume_QR_Code_Verification_System.Server;
 using System;
@@ -7,6 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 50_000_000; // 50MB
+});
+
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+});
 
 builder.Services.AddCors(options =>
 {
@@ -46,5 +57,7 @@ app.MapFallbackToFile("/index.html");
 app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles(); // For serving uploaded files
 
 app.Run();

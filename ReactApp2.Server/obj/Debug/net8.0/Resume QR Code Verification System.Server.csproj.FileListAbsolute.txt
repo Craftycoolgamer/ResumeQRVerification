@@ -164,3 +164,4 @@ C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Ve
 C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\Resume QR Code Verification System.Server.genruntimeconfig.cache
 C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\ref\Resume QR Code Verification System.Server.dll
 C:\Users\crafty\Desktop\D424\ReactApp2.Server\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\crafty\Desktop\D424\ReactApp2.Server\bin\Debug\net8.0\Uploads\02c4a2f3-cbbd-4b5e-a019-2ae7319e5b94.json

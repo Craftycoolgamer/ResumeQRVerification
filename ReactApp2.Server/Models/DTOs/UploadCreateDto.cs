@@ -12,5 +12,8 @@ namespace Resume_QR_Code_Verification_System.Server.Models.DTOs
         //[Range(0.01, double.MaxValue)]
         public Blob Resume { get; set; }
 
+        public IFormFile File { get; set; }
+        public string Description { get; set; }
+
     }
 }

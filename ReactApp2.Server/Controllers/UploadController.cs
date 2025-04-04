@@ -18,10 +18,10 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         private readonly AppDbContext _context;
         private readonly string _uploadPath;
 
-        public UploadController(AppDbContext context)
+        public UploadController(AppDbContext context, IConfiguration config)
         {
             _context = context;
-            _uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            _uploadPath = config["FileStorage:Path"] ?? Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
 
             if (!Directory.Exists(_uploadPath))
             {
@@ -29,40 +29,48 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
-        [HttpGet("test")]
-        public string Get() => "Hello world";
+        //[HttpGet("test")]
+        //public string Get() => "Hello world";
 
+        //// Validate file extensions
+        //private static readonly string[] _allowedExtensions = { ".pdf", ".jpg", ".png" };
+
+        //if (!_allowedExtensions.Contains(fileExt.ToLower()))
+        //    return BadRequest("File type not allowed");
 
 
         //[FromBody]
         //UploadCreateDto UploadDto
         [HttpPost("files")]
-        public async Task<IActionResult> CreateUpload()
+        [RequestSizeLimit(50_000_000)] // 50MB max
+        public async Task<IActionResult> CreateUpload([FromBody] UploadCreateDto model)//???
         {
             try
             {
-                var file = Request.Form.Files[0];
-                if (file == null || file.Length == 0)
-                    return BadRequest("No file uploaded");
+                // Validate
+                if (model.File == null || model.File.Length == 0)
+                    return BadRequest(new { success = false, error = "No file uploaded" });
 
-                // Generate unique filename
-                var storedFileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-                var filePath = Path.Combine(_uploadPath, storedFileName);
+                // Generate safe filename
+                var fileExt = Path.GetExtension(model.File.FileName);
+                var safeFileName = $"{Guid.NewGuid()}{fileExt}";
+                var filePath = Path.Combine(_uploadPath, safeFileName);
 
-                // Save file to disk
+                // Save file
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    await file.CopyToAsync(stream);
+                    await model.File.CopyToAsync(stream);
                 }
 
-                // Save record to database
+                // Save to database
                 var fileRecord = new Resume
                 {
-                    FileName = file.FileName,
-                    StoredFileName = storedFileName,
-                    ContentType = file.ContentType,
-                    FileSize = file.Length,
-                    Description = Request.Form["description"],
+                    FileName = model.File.FileName,
+                    StoredFileName = safeFileName,
+                    ContentType = model.File.ContentType,
+                    FileSize = model.File.Length,
+                    Description = model.Description,
+                    UploadDate = DateTime.UtcNow,
                     FilePath = filePath
                 };
 
@@ -76,6 +84,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                     name = fileRecord.FileName,
                     size = fileRecord.FileSize,
                     message = "File uploaded successfully"
+
                 });
             }
             catch (Exception ex)
@@ -88,22 +97,6 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                     message = "Internal server error"
                 });
             }
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState); // Returns validation errors
-            //}
-
-            //// Map DTO to domain model
-            //var upload = new Resume
-            //{
-            //    Name = UploadDto.Name,
-            //    Resumefile = UploadDto.Resume,
-            //    CreatedDate = DateTime.UtcNow
-            //};
-
-            //await _uploadService.CreateUpload(upload);
-            //return Ok(); // 200 status code
         }
 
         [HttpGet("{id}")]
@@ -134,3 +127,4 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
     }
 }
+

@@ -40,30 +40,28 @@ const FileUploadDropArea = () => {
             setFile(e.target.files[0]);
         }
     }, []);
-    const handleCancel = useCallback(() => {
-        setFile(null);
-        setUploadProgress(0);
-        setUploadStatus(null);
-    }, []);
+    
 
     //Example Code
     //const createProduct = async () => {
     //    const newProduct = { name: "Laptop", price: 999 }; // Plain JS object
     //    await axios.post("https://api.yoursite.com/products", newProduct); // Sends JSON
     //};
+
+    //// Add drag-and-drop
+    //const onDrop = useCallback(acceptedFiles => {
+    //    setFile(acceptedFiles[0]);
+    //}, []);
+
+    //const { getRootProps, getInputProps } = useDropzone({ onDrop });
     
 
-    const handleUpload = useCallback(async (e) => {
-
-        axios.get('https://localhost:7219/test')
-            .then(r => console.log(r.data))
-
+    const handleUpload = async () => {
+        //testing only
+        //axios.get('https://localhost:7219/test')
+        //    .then(r => console.log(r.data))
 
         if (!file) return;
-        e.preventDefault();
-
-        setUploadStatus('uploading');
-        setUploadProgress(0);
 
         const UploadData = new FormData();
         UploadData.append('file', file);
@@ -73,47 +71,35 @@ const FileUploadDropArea = () => {
         UploadData.append('description', description);
 
         try {
+            setUploadStatus('uploading');
+            setUploadProgress(0);
             // Send data to backend (matches UploadCreateDto structure)
             const API_URL = 'https://localhost:7219/files'; 
-            await axios.post(API_URL, UploadData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
+
+            const response = await axios.post(API_URL, UploadData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
                 onUploadProgress: (progressEvent) => {
-                    const percentCompleted = Math.round(
-                        (progressEvent.loaded * 100) / progressEvent.total
-                    );
-                    setUploadProgress(percentCompleted);
+                    setUploadProgress(Math.round((progressEvent.loaded * 100) / progressEvent.total));
                 }
             });
 
+            console.log('Upload success:', response.data);
             setUploadStatus('success');
-            setFile(null);
-            setDescription("");
+            resetForm();
         } catch (error) {
-            //console.error('Upload error:', error.response);
-            alert('Failed to upload');
-            //setUploadStatus('error');
-
-            //console.error('Upload error:', error);
+            console.error('Upload failed:', error.response?.data || error.message);
             setUploadStatus('error');
-
-            // Display more specific error message
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                console.error('Server responded with:', error.response.status);
-                console.error('Response data:', error.response.data);
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.error('No response received:', error.request);
-            } else {
-                // Something happened in setting up the request
-                console.error('Request setup error:', error.message);
-            }
-
-
         }
-    }, [file, description]);
+    };
+
+    const resetForm = () => {
+        setFile(null);
+        setDescription('');
+        setUploadProgress(0);
+        setUploadStatus(null);
+    };
+
+
 
     return (
         <Container>
@@ -133,7 +119,7 @@ const FileUploadDropArea = () => {
                             <FileSize>{(file.size / 1024 / 1024).toFixed(2)} MB</FileSize>
                         </FileInfo>
                     ) : (
-                        "Drop a file here to upload, or click here to browse"
+                        "Drag & drop Resume, or click to browse"
                     )}
 
                     <input
@@ -149,7 +135,7 @@ const FileUploadDropArea = () => {
                 <DescriptionInput
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Enter file description..."
+                    placeholder="File description..."
                 />
             )}
 
@@ -172,7 +158,7 @@ const FileUploadDropArea = () => {
                 {file && !uploadStatus && (
                     <UploadButton onClick={handleUpload}>Upload</UploadButton>
                 )}
-                <CancelButton onClick={handleCancel}>Cancel</CancelButton>
+                <CancelButton onClick={resetForm}>Cancel</CancelButton>
             </ButtonContainer>
         </Container>
     );
@@ -185,12 +171,17 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
   border-radius: 8px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 300px;
   font-family: Arial, sans-serif;
+  padding: 20px;
+  margin: 0 20px;
+  min-width: 120px;
+  max-width: 1000px;
+  
+  width: 100%;
+  box-sizing: border-box;
 `;
 const Title = styled.div`
   font-size: 16px;

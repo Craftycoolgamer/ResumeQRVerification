@@ -1,20 +1,84 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
 
-  color-scheme: light ;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #9effc1;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    color-scheme: light;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #9effc1;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.FileUpload {
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    color: black;
+}
+
+
+
+
+
+
+.main-content {
+    flex: 1;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    width: 100%;
 }
+
+.component-wrapper {
+    width: 100%;
+    max-width: 1400px;
+    min-width: 300px;
+    margin: 0 auto;
+}
+
+.file-upload,
+.data-display {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontal centering */
+    justify-content: center; /* Vertical centering */
+    min-height: 300px; /* Ensure minimum height for visibility */
+    padding: 2rem;
+    box-sizing: border-box;
+    /*border: 1px solid #ddd;*/ /* Optional: visual feedback */
+}
+
+
+
+
+
+
+.header {
+    display: flex;
+    justify-content: space-between; /* Pushes children to opposite ends */
+    align-items: center; /* Vertically centers the items */
+    /*padding: 1rem 2rem;*/ /* Adds some padding inside the header */
+    /*background-color: #f8f9fa;*/ /* Light gray background */
+    width: 100%; /* Ensures the header spans the full width */
+}
+
+
+.login-button {
+    padding: 8px 16px;
+    background-color: transparent;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+    .login-button:hover {
+        background-color: #e0e0e0;
+    }
 

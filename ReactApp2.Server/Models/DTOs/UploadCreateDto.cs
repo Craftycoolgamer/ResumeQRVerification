@@ -9,11 +9,22 @@ namespace Resume_QR_Code_Verification_System.Server.Models.DTOs
         [Required]
         public string? Name { get; set; }
 
-        //[Range(0.01, double.MaxValue)]
-        public Blob Resume { get; set; }
+        [Required]
+        [EmailAddress]
+        public string? Email { get; set; }
 
-        public IFormFile File { get; set; }
-        public string Description { get; set; }
+        [Required]
+        [Phone]
+        public string? Phone { get; set; }
+
+        [Required]
+        [Range(0, 50)]
+        public int Experience { get; set; }
+
+        [Required]
+        public IFormFile? File { get; set; }
+
+        public string? Description { get; set; }
 
     }
 }

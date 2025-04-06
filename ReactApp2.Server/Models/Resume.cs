@@ -9,23 +9,23 @@ namespace Resume_QR_Code_Verification_System.Server.Models
         public int Id { get; set; }
 
         [Required]
-        public string FileName { get; set; }
+        public string? FileName { get; set; }
 
         [Required]
-        public string StoredFileName { get; set; }
+        public string? StoredFileName { get; set; }
 
         [Required]
-        public string ContentType { get; set; }
+        public string? ContentType { get; set; }
 
         [Required]
         public long FileSize { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         public DateTime UploadDate { get; set; } = DateTime.UtcNow;
 
         [Required]
-        public string FilePath { get; set; }
+        public string? FilePath { get; set; }
     }
 }

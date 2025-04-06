@@ -10,8 +10,7 @@ using System;
 namespace Resume_QR_Code_Verification_System.Server.Controller
 {
     [ApiController]
-    //[Route("api/upload")]
-    //[Route("files")]
+    //[Route("api/[controller]")]
     public class UploadController : ControllerBase
     {
         //private readonly IUploadService? _uploadService;
@@ -29,8 +28,9 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
-        //[HttpGet("test")]
-        //public string Get() => "Hello world";
+        //for testing only
+        [HttpGet("test")]
+        public string Get() => "Hello world";
 
         //// Validate file extensions
         //private static readonly string[] _allowedExtensions = { ".pdf", ".jpg", ".png" };
@@ -43,24 +43,47 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         //UploadCreateDto UploadDto
         [HttpPost("files")]
         [RequestSizeLimit(50_000_000)] // 50MB max
-        public async Task<IActionResult> CreateUpload([FromBody] UploadCreateDto model)//???
+        [Consumes("multipart/form-data")] // Explicitly accept form-data
+        public async Task<IActionResult> CreateUpload([FromForm] UploadCreateDto model)//???
         {
             try
             {
                 // Validate
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 if (model.File == null || model.File.Length == 0)
+                {
                     return BadRequest(new { success = false, error = "No file uploaded" });
+                }
+                var allowedExtensions = new[] { ".pdf", ".jpg", ".png", ".jpeg" };
+                var fileExtension = Path.GetExtension(model.File.FileName).ToLower();
+
+                if (!allowedExtensions.Contains(fileExtension))
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        error = $"Invalid file type. Allowed types: {string.Join(", ", allowedExtensions)}"
+                    });
+                }
+
+
+
+
 
                 // Generate safe filename
-                var fileExt = Path.GetExtension(model.File.FileName);
-                var safeFileName = $"{Guid.NewGuid()}{fileExt}";
+                var safeFileName = $"{Guid.NewGuid()}{fileExtension}";
                 var filePath = Path.Combine(_uploadPath, safeFileName);
+
 
                 // Save file
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await model.File.CopyToAsync(stream);
                 }
+
 
                 // Save to database
                 var fileRecord = new Resume
@@ -99,15 +122,23 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetFile(int id)
-        {
-            var fileRecord = await _context.FileRecords.FindAsync(id);
-            if (fileRecord == null)
-                return NotFound();
 
-            var fileStream = System.IO.File.OpenRead(fileRecord.FilePath);
-            return File(fileStream, fileRecord.ContentType, fileRecord.FileName);
+
+        [HttpGet("resumes")]
+        public async Task<IActionResult> GetAllResumes()
+        {
+            var resumes = await _context.FileRecords
+                .Select(r => new
+                {
+                    id = r.Id,
+                    fileName = r.FileName,
+                    description = r.Description,
+                    uploadDate = r.UploadDate,
+                    fileSize = r.FileSize
+                })
+                .ToListAsync();
+
+            return Ok(resumes);
         }
 
 
@@ -116,7 +147,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
 
 
-        //[HttpPut("/{id}")]
+        //[("/{id}")]
         //public IActionResult UpdateUpload(int id, [FromBody] UploadUpdateDto UploadDto)
         //{
         //    // This method ONLY accepts `UploadUpdateDto`

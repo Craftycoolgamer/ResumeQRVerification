@@ -52,7 +52,7 @@
     min-height: 300px; /* Ensure minimum height for visibility */
     padding: 2rem;
     box-sizing: border-box;
-    /*border: 1px solid #ddd;*/ /* Optional: visual feedback */
+/*    border: 1px solid #ddd;  */
 }
 
 
@@ -79,6 +79,6 @@
 }
 
     .login-button:hover {
-        background-color: #e0e0e0;
+        background-color: #4CAF50;
     }
 

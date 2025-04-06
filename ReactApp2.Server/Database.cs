@@ -10,6 +10,8 @@ namespace Resume_QR_Code_Verification_System.Server
         //dbSet<products>
         //dbSet<users>
 
+        //TODO: switch over to sqlite
+
         public DbSet<Resume> FileRecords { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }

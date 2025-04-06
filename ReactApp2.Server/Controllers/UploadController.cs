@@ -6,6 +6,7 @@ using Resume_QR_Code_Verification_System.Server.Models;
 using Resume_QR_Code_Verification_System.Server.Models.DTOs;
 using Resume_QR_Code_Verification_System.Server.Services;
 using System;
+using System.Net.Mime;
 
 namespace Resume_QR_Code_Verification_System.Server.Controller
 {
@@ -13,34 +14,13 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
     //[Route("api/[controller]")]
     public class UploadController : ControllerBase
     {
-        //private readonly IUploadService? _uploadService;
-        private readonly AppDbContext _context;
-        private readonly string _uploadPath;
-
-        public UploadController(AppDbContext context, IConfiguration config)
-        {
-            _context = context;
-            _uploadPath = config["FileStorage:Path"] ?? Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
-
-            if (!Directory.Exists(_uploadPath))
-            {
-                Directory.CreateDirectory(_uploadPath);
-            }
-        }
-
         //for testing only
         [HttpGet("test")]
         public string Get() => "Hello world";
 
-        //// Validate file extensions
-        //private static readonly string[] _allowedExtensions = { ".pdf", ".jpg", ".png" };
 
-        //if (!_allowedExtensions.Contains(fileExt.ToLower()))
-        //    return BadRequest("File type not allowed");
-
-
-        //[FromBody]
-        //UploadCreateDto UploadDto
+        
+        //UploadCreateDto
         [HttpPost("files")]
         [RequestSizeLimit(50_000_000)] // 50MB max
         [Consumes("multipart/form-data")] // Explicitly accept form-data
@@ -75,7 +55,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
                 // Generate safe filename
                 var safeFileName = $"{Guid.NewGuid()}{fileExtension}";
-                var filePath = Path.Combine(_uploadPath, safeFileName);
+                var filePath = Path.Combine(DbService.UploadPath, safeFileName);
 
 
                 // Save file
@@ -86,26 +66,20 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
 
                 // Save to database
-                var fileRecord = new Resume
-                {
-                    FileName = model.File.FileName,
-                    StoredFileName = safeFileName,
-                    ContentType = model.File.ContentType,
-                    FileSize = model.File.Length,
-                    Description = model.Description,
-                    UploadDate = DateTime.UtcNow,
-                    FilePath = filePath
-                };
+                Upload newUpload = new Upload(1, model.File.FileName, safeFileName,
+                    model.File.ContentType, model.File.Length, model.Description, DateTime.UtcNow, filePath);
+                GetSet.Insert(newUpload);
+                
 
-                _context.FileRecords.Add(fileRecord);
-                await _context.SaveChangesAsync();
+                //_context.FileRecords.Add(fileRecord);
+                //await _context.SaveChangesAsync();
 
                 return Ok(new
                 {
                     success = true,
-                    id = fileRecord.Id,
-                    name = fileRecord.FileName,
-                    size = fileRecord.FileSize,
+                    id = newUpload.Id,
+                    name = newUpload.FileName,
+                    size = newUpload.FileSize,
                     message = "File uploaded successfully"
 
                 });
@@ -125,36 +99,12 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
 
         [HttpGet("resumes")]
-        public async Task<IActionResult> GetAllResumes()
+        public IActionResult GetAllResumes()
         {
-            var resumes = await _context.FileRecords
-                .Select(r => new
-                {
-                    id = r.Id,
-                    fileName = r.FileName,
-                    description = r.Description,
-                    uploadDate = r.UploadDate,
-                    fileSize = r.FileSize
-                })
-                .ToListAsync();
+            List<Upload> Uploads = GetSet.GetAll(new Upload());
 
-            return Ok(resumes);
+            return Ok(Uploads);
         }
-
-
-
-
-
-
-
-        //[("/{id}")]
-        //public IActionResult UpdateUpload(int id, [FromBody] UploadUpdateDto UploadDto)
-        //{
-        //    // This method ONLY accepts `UploadUpdateDto`
-        //    // React must send JSON that matches this DTO
-        //}
-
-
 
     }
 }

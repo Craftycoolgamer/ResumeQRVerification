@@ -17,18 +17,22 @@ const DataDisplayArea = () => {
             try {
                 const response = await axios.get('https://localhost:7219/resumes');
                 const result = response.data; // Axios automatically parses JSON
+                //console.log("Result: ", result);
 
                 // Map backend fields to frontend display
                 const mappedData = result.map(item => ({
-                    id: item.id,
+                    id: item.id, // PascalCase
                     fileName: item.fileName,
                     description: item.description,
                     uploadDate: new Date(item.uploadDate).toLocaleDateString(),
                     fileSize: `${Math.round(item.fileSize / 1024)} KB`
                 }));
+                //console.log("Mapped Data: ", mappedData);
 
                 setData(mappedData);
+                
             } catch (err) {
+                console.error("API Error:", err); // Log detailed error
                 setError(err.message);
 
                 
@@ -92,7 +96,7 @@ const DataDisplayArea = () => {
                 {filteredData.map((item) => (
                     <div key={item.id} className="table-row">
                         <div className="table-cell">{item.fileName}</div>
-                        <div className="table-cell">{item.description}</div>
+                        <div className="table-cell">{item.description || "No description"}</div>
                         <div className="table-cell">{item.uploadDate}</div>
                         <div className="table-cell">{item.fileSize}</div>
                     </div>

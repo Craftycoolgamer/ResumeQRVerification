@@ -87,9 +87,9 @@ const FileUploadDropArea = () => {
             });
 
             console.log('Upload success:', response.data);
-            //setUploadStatus(null);
-            setUploadStatus('success');
-            resetForm();
+            setUploadStatus(null);
+            //setUploadStatus('success');
+            //resetForm();
         } catch (error) {
             //console.error('Upload failed:', error.response.data || error.message);
             setUploadStatus('error');

@@ -40,6 +40,9 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                 }
                 var allowedExtensions = new[] { ".pdf", ".jpg", ".png", ".jpeg" };
                 var fileExtension = Path.GetExtension(model.File.FileName).ToLower();
+                
+                //TODO: Validate input field (phone, email)
+
 
                 if (!allowedExtensions.Contains(fileExtension))
                 {
@@ -96,8 +99,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
         //Update an Entity
         //var success = GetSet.Update(modifiedUpload);
-        //Delete an Entity
-        //var success = GetSet.Delete<Upload>(456);
+        
 
         [HttpGet("api/resumes")]
         public IActionResult GetAllResumes()
@@ -132,6 +134,63 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                     success = false,
                     error = ex.Message,
                     message = "Error downloading file"
+                });
+            }
+        }
+
+        [HttpGet("api/delete/{id}")]
+        public IActionResult DeleteResume(int id)
+        {
+            try
+            {
+                var upload = GetSet.GetById<Upload>(id);
+                if (upload == null) return NotFound("File not found");
+
+                // Delete database record
+                bool dbSuccess = GetSet.Delete<Upload>(id);
+
+                // Delete physical file
+                if (System.IO.File.Exists(upload.FilePath))
+                {
+                    System.IO.File.Delete(upload.FilePath);
+                }
+
+                return dbSuccess ? Ok(new { success = true })
+                                : StatusCode(500, new { success = false });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    error = ex.Message,
+                    message = "Error deleting file"
+                });
+            }
+        }
+
+        [HttpPut("api/update/{id}")]
+        public IActionResult UpdateResume(int id, [FromBody] UploadUpdateDto dto)
+        {
+            try
+            {
+                var upload = GetSet.GetById<Upload>(id);
+                if (upload == null) return NotFound("File not found");
+
+                // Update only allowed fields
+                upload.Description = dto.Description;
+
+                bool success = GetSet.Update(upload);
+                return success ? Ok(new { success = true })
+                              : StatusCode(500, new { success = false });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    error = ex.Message,
+                    message = "Error updating file"
                 });
             }
         }

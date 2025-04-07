@@ -14,6 +14,7 @@ const FileUploadDropArea = () => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploadStatus, setUploadStatus] = useState(null);
     const [description, setDescription] = useState("");
+    const [error, setError] = useState(null);
 
     // Drag and drop handlers
     const handleDragEnter = useCallback((e) => {
@@ -61,6 +62,8 @@ const FileUploadDropArea = () => {
 
         if (!file) return;
 
+        //TODO: verify there is forum data
+
         const uploadData = new FormData();
         // Append form data
         Object.entries(formData).forEach(([key, value]) => {
@@ -87,12 +90,13 @@ const FileUploadDropArea = () => {
             });
 
             console.log('Upload success:', response.data);
-            //setUploadStatus(null);
-            setUploadStatus('success');
-            resetForm();
+            setUploadStatus(null);
+            //setUploadStatus('success');
+            //resetForm();
         } catch (error) {
             //console.error('Upload failed:', error.response.data || error.message);
             setUploadStatus('error');
+            setError(error);
 
             if (error.response) {
                 // The request was made and the server responded with a status code
@@ -221,11 +225,12 @@ const FileUploadDropArea = () => {
             )}
 
             {uploadStatus === 'error' && (
-                <div className="status-message status-error">Upload failed. Please try again.</div>
+                <div className="status-message status-error">Upload failed. {error.response.data.error}</div>
             )}
 
+            {/*{file && !uploadStatus && (*/}
             <div className="button-container">
-                {file && !uploadStatus && (
+                {file && (
                     <button className="upload-button" onClick={handleUpload}>Upload</button>
                 )}
                 <button className="cancel-button" onClick={resetForm}>Cancel</button>

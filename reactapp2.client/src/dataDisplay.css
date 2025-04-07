@@ -4,12 +4,12 @@
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     color: #333;
-    display: flex;
-    flex-direction: column;
+/*    display: flex;*/
+/*    flex-direction: column;*/
     font-family: Arial, sans-serif;
-    border-radius: 8px;
+    border-radius: 14px;
     min-width: 315px;
-    max-width: 1000px;
+    max-width: 90%;
     /*    align-items: center;*/
     width: 100%;
 /*    box-sizing: border-box;*/
@@ -41,52 +41,172 @@
     .search-container input {
         padding: 8px;
         border: 1px solid #ccc;
-        border-radius: 13px;
+        border-radius: 14px;
         width: 200px;
     }
 
-.download-button {
-    padding: 5px 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
 
-    .download-button:hover {
-        background-color: #45a049;
-    }
 
 .data-rectangle {
     border: 1px solid #ddd;
-    border-radius: 13px;
+    border-radius: 14px;
     background-color: #f5f5f5;
+    display: grid;
+    grid-template-columns: max-content auto auto auto fit-content(197px);
 }
 
-.table-header {
-    display: flex;
-    background-color: #ddd;
-    border-radius: 13px;
-    font-weight: bold;
-    border-bottom: 1px solid #ddd;
+.download-button,
+.edit-button,
+.save-button{
+    background-color: #4CAF50;
 }
 
-.header-cell {
-    padding: 12px 15px;
-    flex: 1;
-}
-
-.table-row {
-    display: flex;
-    border-bottom: 1px solid #ddd;
-}
-
-    .table-row:last-child {
-        border-bottom: none;
+    .download-button:hover,
+    .edit-button:hover,
+    .save-button:hover {
+        background-color: #45a049;
     }
 
+.delete-button,
+.cancelEdit-button{
+    background-color: #f44336;
+}
+    .delete-button:hover,
+    .cancelEdit-button:hover {
+        background-color: #d93e32;
+    }
+
+.action-button {
+    color: white;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    min-width: 55px;
+/*    max-width: 197px;*/
+}
+
+.edit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    width: 400px;
+}
+
+    .modal-content textarea {
+        width: 100%;
+        height: 100px;
+        margin: 10px 0;
+        padding: 8px;
+        box-sizing: border-box;
+        max-width: 100%;
+        max-height: 80vh;
+        min-width: 100%;
+        min-height: 50px;
+        border-radius: 14px;
+    }
+
+.modal-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+
+
+.table-header {
+    background-color: #ddd;
+    font-weight: bold;
+    display: contents;
+}
+    /*    rounded top corrners    */
+    .table-header .header-cell:first-child {
+        border-radius: 13px 0 0 0;
+    }
+    .table-header .header-cell:last-child {
+        border-radius: 0 13px 0 0;
+/*        max-width: 197px;*/
+    }
+
+.header-cell,
 .table-cell {
-    padding: 12px 15px;
-    flex: 1;
+    padding: 10px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: inherit;
+    /*    border-bottom: 1px solid #ddd;*/
+/*    max-width: fit-content;*/
+}
+    .table-row:last-child {
+        border-bottom: none;
+        border-radius: 14px;
+    }
+
+.table-row {
+    display: contents;
+}
+
+
+.header-cell:nth-child(1),
+.table-cell:nth-child(1) {
+    grid-column: 1;
+}
+
+.header-cell:nth-child(2),
+.table-cell:nth-child(2) {
+    grid-column: 2;
+}
+
+.header-cell:nth-child(3),
+.table-cell:nth-child(3) {
+    grid-column: 3;
+}
+
+.header-cell:nth-child(4),
+.table-cell:nth-child(4) {
+    grid-column: 4;
+}
+
+.header-cell:nth-child(5),
+.table-cell:nth-child(5) {
+    grid-column: 5;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .data-rectangle {
+        grid-template-columns: max-content auto auto auto max-content;
+    }
+
+    .actions-cell {
+        display: grid;
+        gap: 4px;
+        box-sizing: border-box;
+        padding: 6px;
+    }
+
+    .table-header {
+        display: none;
+    }
 }

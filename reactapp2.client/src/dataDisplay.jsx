@@ -8,6 +8,8 @@ const DataDisplayArea = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [editingItem, setEditingItem] = useState(null);
+    const [editDescription, setEditDescription] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,6 +77,39 @@ const DataDisplayArea = () => {
         }
     };
 
+    const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to delete this resume?')) {
+            try {
+                await axios.delete(`https://localhost:7219/api/delete/${id}`);
+                setData(data.filter(item => item.id !== id));
+            } catch (error) {
+                alert('Delete failed: ' + error.message);
+            }
+        }
+    };
+
+    const handleEdit = (item) => {
+        setEditingItem(item);
+        setEditDescription(item.description);
+    };
+
+    const handleUpdate = async () => {
+        try {
+            await axios.put(
+                `https://localhost:7219/api/update/${editingItem.id}`,
+                { description: editDescription }
+            );
+
+            setData(data.map(item =>
+                item.id === editingItem.id
+                    ? { ...item, description: editDescription }
+                    : item
+            ));
+            setEditingItem(null);
+        } catch (error) {
+            alert('Update failed: ' + error.message);
+        }
+    };
 
     if (loading) return <div className="content-container">Loading resumes...</div>;
     if (error) {
@@ -112,21 +147,53 @@ const DataDisplayArea = () => {
                     <div className="header-cell">Description</div>
                     <div className="header-cell">Upload Date</div>
                     <div className="header-cell">Size</div>
-                    <div className="header-cell">Action</div>
+                    <div className="header-cell">Actions</div>
                 </div>
 
                 {filteredData.map((item) => (
                     <div key={item.id} className="table-row">
-                        <div className="table-cell">{item.fileName}</div>
+                        <div className="table-cell" data-label="File Name">{item.fileName}</div>
                         <div className="table-cell">{item.description || "No description"}</div>
                         <div className="table-cell">{item.uploadDate}</div>
                         <div className="table-cell">{item.fileSize}</div>
-                        <div className="table-cell">
-                            <button className="download-button" onClick={() => handleDownload(item.id, item.fileName)}> Download </button>
+                        <div className="table-cell actions-cell">
+                            <button
+                                className="action-button download-button"
+                                onClick={() => handleDownload(item.id, item.fileName)}
+                            >
+                                Download
+                            </button>
+                            <button
+                                className="action-button edit-button"
+                                onClick={() => handleEdit(item)}
+                            >
+                                Edit
+                            </button>
+                            <button
+                                className="action-button delete-button"
+                                onClick={() => handleDelete(item.id)}
+                            >
+                                Delete
+                            </button>
                         </div>
                     </div>
                 ))}
             </div>
+            {editingItem && (
+                <div className="edit-modal">
+                    <div className="modal-content">
+                        <h3>Edit Description</h3>
+                        <textarea
+                            value={editDescription}
+                            onChange={(e) => setEditDescription(e.target.value)}
+                        />
+                        <div className="modal-buttons">
+                            <button className="action-button save-button" onClick={handleUpdate}>Save</button>
+                            <button className="action-button cancelEdit-button" onClick={() => setEditingItem(null)}>Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

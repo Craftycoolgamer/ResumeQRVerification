@@ -157,8 +157,8 @@ namespace Resume_QR_Code_Verification_System.Server
         }
 
 
-        public static List<Upload> GetAll(Upload _) => GetAll<Upload>();
-        public static List<User> GetAll(User _) => GetAll<User>();
+        //public static List<Upload> GetAll(Upload _) => GetAll<Upload>();
+        //public static List<User> GetAll(User _) => GetAll<User>();
         public static List<T> GetAll<T>() where T : class, new()
         {
             try

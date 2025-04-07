@@ -10,6 +10,7 @@ const DataDisplayArea = () => {
     const [error, setError] = useState(null);
     const [editingItem, setEditingItem] = useState(null);
     const [editDescription, setEditDescription] = useState('');
+    const [previewUrl, setPreviewUrl] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -111,6 +112,20 @@ const DataDisplayArea = () => {
         }
     };
 
+    const handleView = async (id) => {
+        try {
+            const response = await axios.get(`https://localhost:7219/api/preview/${id}`, {
+                responseType: 'blob'
+            });
+
+            // Create object URL from blob
+            const url = URL.createObjectURL(response.data);
+            setPreviewUrl(url);
+        } catch (error) {
+            alert('Failed to preview file: ' + error.message);
+        }
+    };
+
     if (loading) return <div className="content-container">Loading resumes...</div>;
     if (error) {
         return (
@@ -158,6 +173,12 @@ const DataDisplayArea = () => {
                         <div className="table-cell">{item.fileSize}</div>
                         <div className="table-cell actions-cell">
                             <button
+                                className="action-button view-button"
+                                onClick={() => handleView(item.id)}
+                            >
+                                View
+                            </button>
+                            <button
                                 className="action-button download-button"
                                 onClick={() => handleDownload(item.id, item.fileName)}
                             >
@@ -191,6 +212,26 @@ const DataDisplayArea = () => {
                             <button className="action-button save-button" onClick={handleUpdate}>Save</button>
                             <button className="action-button cancelEdit-button" onClick={() => setEditingItem(null)}>Cancel</button>
                         </div>
+                    </div>
+                </div>
+            )}
+            {previewUrl && (
+                <div className="preview-modal">
+                    <div className="preview-content">
+                        <button
+                            className="closePreview-button"
+                            onClick={() => {
+                                setPreviewUrl(null);
+                                URL.revokeObjectURL(previewUrl);
+                            }}
+                        >
+                            &times;
+                        </button>
+                        <iframe
+                            src={previewUrl}
+                            title="File Preview"
+                            style={{ width: '100%', height: '90%' }}
+                        />
                     </div>
                 </div>
             )}

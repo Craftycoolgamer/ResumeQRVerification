@@ -18,7 +18,7 @@ export default function LoginPopup({ onClose, onLogin }) {
                     className="close-button"
                     onClick={onClose}
                     aria-label="Close login popup">
-                    X
+                    &times;
                 </button>
                 <h2>Login</h2>
                 <form onSubmit={handleSubmit}>

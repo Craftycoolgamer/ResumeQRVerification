@@ -138,7 +138,32 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
-        [HttpGet("api/delete/{id}")]
+        [HttpGet("api/preview/{id}")]
+        public IActionResult PreviewResume(int id)
+        {
+            try
+            {
+                var upload = GetSet.GetById<Upload>(id);
+                if (upload == null) return NotFound("File record not found");
+
+                if (!System.IO.File.Exists(upload.FilePath))
+                    return NotFound("File not found on server");
+
+                var fileStream = System.IO.File.OpenRead(upload.FilePath);
+                return File(fileStream, upload.ContentType); // Remove filename to prevent download
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    error = ex.Message,
+                    message = "Error previewing file"
+                });
+            }
+        }
+
+        [HttpDelete("api/delete/{id}")]
         public IActionResult DeleteResume(int id)
         {
             try

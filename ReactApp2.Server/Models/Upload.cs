@@ -1,8 +1,4 @@
 ﻿using SQLite;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.Design;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Metadata;
 
 namespace Resume_QR_Code_Verification_System.Server.Models
 {
@@ -31,9 +27,10 @@ namespace Resume_QR_Code_Verification_System.Server.Models
         public int Id { get; set; }
 
         //[Indexed] // Improves query performance for foreign key
-        public int CompanyId { get; set; } 
+        public int CompanyId { get; set; }
 
-        public string? FileName { get; set; }
+        [NotNull]
+        public string FileName { get; set; }
 
         public string? StoredFileName { get; set; }
 

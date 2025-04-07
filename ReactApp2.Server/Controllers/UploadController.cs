@@ -7,6 +7,7 @@ using Resume_QR_Code_Verification_System.Server.Models.DTOs;
 using Resume_QR_Code_Verification_System.Server.Services;
 using System;
 using System.Net.Mime;
+using System.IO;
 
 namespace Resume_QR_Code_Verification_System.Server.Controller
 {
@@ -21,7 +22,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
         
         //UploadCreateDto
-        [HttpPost("files")]
+        [HttpPost("api/files")]
         [RequestSizeLimit(50_000_000)] // 50MB max
         [Consumes("multipart/form-data")] // Explicitly accept form-data
         public async Task<IActionResult> CreateUpload([FromForm] UploadCreateDto model)//???
@@ -71,9 +72,6 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                 GetSet.Insert(newUpload);
                 
 
-                //_context.FileRecords.Add(fileRecord);
-                //await _context.SaveChangesAsync();
-
                 return Ok(new
                 {
                     success = true,
@@ -96,15 +94,49 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
+        //Update an Entity
+        //var success = GetSet.Update(modifiedUpload);
+        //Delete an Entity
+        //var success = GetSet.Delete<Upload>(456);
 
-
-        [HttpGet("resumes")]
+        [HttpGet("api/resumes")]
         public IActionResult GetAllResumes()
         {
-            List<Upload> Uploads = GetSet.GetAll(new Upload());
-
+            var Uploads = GetSet.GetAll<Upload>();
             return Ok(Uploads);
         }
+
+        [HttpGet("api/download/{id}")]
+        public IActionResult DownloadResume(int id)
+        {
+            try
+            {
+                // Get the upload record
+                var upload = GetSet.GetById<Upload>(id);
+                if (upload == null) return NotFound("File record not found");
+
+                // Verify physical file exists
+                if (!System.IO.File.Exists(upload.FilePath))
+                    return NotFound("File not found on server");
+
+                // Create file stream
+                var fileStream = System.IO.File.OpenRead(upload.FilePath);
+
+                // Return file with proper content type and original filename
+                return File(fileStream, upload.ContentType, upload.FileName);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    error = ex.Message,
+                    message = "Error downloading file"
+                });
+            }
+        }
+
+
 
     }
 }

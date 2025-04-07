@@ -79,69 +79,99 @@ namespace Resume_QR_Code_Verification_System.Server
 
     public class GetSet
     {
-        public static bool Insert<TEntity>(TEntity entity)
+        public static bool Insert<TEntity>(TEntity entity) where TEntity : class
         {
             try
             {
-                using (SQLiteConnection connection = new(DbService.DBPath))
+                using (var connection = new SQLiteConnection(DbService.DBPath))
                 {
                     connection.Insert(entity);
+                    return true;
                 }
-                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error Inserting Data: {ex.Message}");
+                Console.WriteLine($"Error inserting {typeof(TEntity).Name}: {ex.Message}");
+                return false;
+            }
+        }
+
+        public static bool Update<TEntity>(TEntity entity) where TEntity : class
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(DbService.DBPath))
+                {
+                    connection.Update(entity);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating {typeof(TEntity).Name}: {ex.Message}");
+                return false;
+            }
+        }
+
+        public static bool Delete<TEntity>(int id) where TEntity : class, new()
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(DbService.DBPath))
+                {
+                    var entity = connection.Find<TEntity>(id);
+                    if (entity != null)
+                    {
+                        connection.Delete(entity);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting {typeof(TEntity).Name} with ID {id}: {ex.Message}");
                 return false;
             }
         }
 
 
-        public static List<Upload> GetAllUploads()
+
+
+
+
+        public static T GetById<T>(int id) where T : class, new()
         {
             try
             {
-                using (SQLiteConnection connection = new(DbService.DBPath))
+                using (var connection = new SQLiteConnection(DbService.DBPath))
                 {
-                    return connection.Query<Upload>("SELECT * FROM Upload").ToList();
+                    return connection.Find<T>(id);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error retrieving terms: {ex.Message}");
-                return [];
+                Console.WriteLine($"Error retrieving {typeof(T).Name} with ID {id}: {ex.Message}");
+                return null;
             }
         }
 
-        public static List<Upload> GetAll(Upload uploads)
-        {
-            try
-            {
-                using (SQLiteConnection connection = new(DbService.DBPath))
-                {
-                    return connection.Query<Upload>("SELECT * FROM Upload").ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error retrieving terms: {ex.Message}");
-                return [];
-            }
-        }
 
-        public static List<User> GetAll(User users)
+        public static List<Upload> GetAll(Upload _) => GetAll<Upload>();
+        public static List<User> GetAll(User _) => GetAll<User>();
+        public static List<T> GetAll<T>() where T : class, new()
         {
             try
             {
-                using (SQLiteConnection connection = new(DbService.DBPath))
+                using (var connection = new SQLiteConnection(DbService.DBPath))
                 {
-                    return connection.Query<User>("SELECT * FROM User").ToList();
+                    return connection.Table<T>().ToList();
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error retrieving terms: {ex.Message}");
-                return [];
+                Console.WriteLine($"Error retrieving {typeof(T).Name} records: {ex.Message}");
+                return new List<T>();
             }
         }
 

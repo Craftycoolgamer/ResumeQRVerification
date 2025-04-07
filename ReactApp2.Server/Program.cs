@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Resume_QR_Code_Verification_System.Server;
 using System;
+using System.Text.Json;
 using static Resume_QR_Code_Verification_System.Server.DbService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,6 +59,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsync(JsonSerializer.Serialize(new
+        {
+            error = "An unexpected error occurred",
+            details = context.Features.Get<IExceptionHandlerFeature>()?.Error.Message
+        }));
+    });
+});
 
 app.UseHttpsRedirection();
 

@@ -78,7 +78,7 @@ const FileUploadDropArea = () => {
             setUploadProgress(0);
 
             // Send data to backend (matches UploadCreateDto structure)
-            const API_URL = 'https://localhost:7219/files'; 
+            const API_URL = 'https://localhost:7219/api/files'; 
             const response = await axios.post(API_URL, uploadData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
                 onUploadProgress: (progressEvent) => {
@@ -87,9 +87,9 @@ const FileUploadDropArea = () => {
             });
 
             console.log('Upload success:', response.data);
-            setUploadStatus(null);
-            //setUploadStatus('success');
-            //resetForm();
+            //setUploadStatus(null);
+            setUploadStatus('success');
+            resetForm();
         } catch (error) {
             //console.error('Upload failed:', error.response.data || error.message);
             setUploadStatus('error');

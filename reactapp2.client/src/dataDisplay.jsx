@@ -15,13 +15,13 @@ const DataDisplayArea = () => {
             //    .then(r => console.log(r.data))
 
             try {
-                const response = await axios.get('https://localhost:7219/resumes');
+                const response = await axios.get('https://localhost:7219/api/resumes');
                 const result = response.data; // Axios automatically parses JSON
                 //console.log("Result: ", result);
 
                 // Map backend fields to frontend display
                 const mappedData = result.map(item => ({
-                    id: item.id, // PascalCase
+                    id: item.id, 
                     fileName: item.fileName,
                     description: item.description,
                     uploadDate: new Date(item.uploadDate).toLocaleDateString(),
@@ -54,6 +54,27 @@ const DataDisplayArea = () => {
         // Add your scan functionality here
         alert('Scan button clicked!');
     };
+
+    const handleDownload = async (id, fileName) => {
+        try {
+            const response = await axios.get(
+                `https://localhost:7219/api/download/${id}`,
+                { responseType: 'blob' }
+            );
+
+            // Create download link
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } catch (error) {
+            alert('Failed to download file: ' + error.message);
+        }
+    };
+
 
     if (loading) return <div className="content-container">Loading resumes...</div>;
     if (error) {
@@ -91,6 +112,7 @@ const DataDisplayArea = () => {
                     <div className="header-cell">Description</div>
                     <div className="header-cell">Upload Date</div>
                     <div className="header-cell">Size</div>
+                    <div className="header-cell">Action</div>
                 </div>
 
                 {filteredData.map((item) => (
@@ -99,6 +121,9 @@ const DataDisplayArea = () => {
                         <div className="table-cell">{item.description || "No description"}</div>
                         <div className="table-cell">{item.uploadDate}</div>
                         <div className="table-cell">{item.fileSize}</div>
+                        <div className="table-cell">
+                            <button className="download-button" onClick={() => handleDownload(item.id, item.fileName)}> Download </button>
+                        </div>
                     </div>
                 ))}
             </div>

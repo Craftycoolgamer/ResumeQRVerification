@@ -3,7 +3,6 @@ import axios from 'axios';
 import './dataDisplay.css';
 
 const DataDisplayArea = () => {
-    // Sample data - replace with your actual data source
     const [data, setData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
@@ -18,7 +17,7 @@ const DataDisplayArea = () => {
             //    .then(r => console.log(r.data))
 
             try {
-                const response = await axios.get('https://localhost:7219/api/resumes');
+                const response = await axios.get('https://localhost:7219/api/upload/resumes');
                 const result = response.data; // Axios automatically parses JSON
                 //console.log("Result: ", result);
 

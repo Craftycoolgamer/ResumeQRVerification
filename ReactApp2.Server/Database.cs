@@ -1,34 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Resume_QR_Code_Verification_System.Server.Controllers;
 using Resume_QR_Code_Verification_System.Server.Models;
 using System;
 using SQLite;
 using Microsoft.AspNetCore.Mvc;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Resume_QR_Code_Verification_System.Server
 {
-    //public class AppDbContext : DbContext
-    //{
-    //    //dbSet<products>
-    //    //dbSet<users>
-
-    //    //TODO: switch over to sqlite
-
-    //    public DbSet<Upload> FileRecords { get; set; }
-
-    //    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-        
-
-    //    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    //    {
-    //        modelBuilder.Entity<Upload>().ToTable("FileRecords");
-    //    }
-
-
-    //}
-
-    
-
     public class DbService
     {
         private readonly IConfiguration _config;
@@ -58,6 +36,7 @@ namespace Resume_QR_Code_Verification_System.Server
             }
 
             CreateTables();
+            CreateTestUser();
 
         }
 
@@ -70,11 +49,39 @@ namespace Resume_QR_Code_Verification_System.Server
                 connection.CreateTable<Company>();
             }
         }
-        
 
+        private void CreateTestUser()
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(DBPath))
+                {
+                    // Check if test user exists
+                    var testUser = connection.Table<User>()
+                        .FirstOrDefault(u => u.Username == "t");
 
-        
+                    if (testUser == null)
+                    {
+                        var newUser = new User
+                        {
+                            Username = "t",
+                            PasswordHash = BC.HashPassword("t", BC.GenerateSalt(12))
+                        };
+
+                        connection.Insert(newUser);
+                        Console.WriteLine("Test user created successfully");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating test user: {ex.Message}");
+            }
+        }
+
     }
+
+
 
 
     public class GetSet
@@ -135,11 +142,6 @@ namespace Resume_QR_Code_Verification_System.Server
             }
         }
 
-
-
-
-
-
         public static T GetById<T>(int id) where T : class, new()
         {
             try
@@ -155,7 +157,6 @@ namespace Resume_QR_Code_Verification_System.Server
                 return null;
             }
         }
-
 
         //public static List<Upload> GetAll(Upload _) => GetAll<Upload>();
         //public static List<User> GetAll(User _) => GetAll<User>();
@@ -176,22 +177,5 @@ namespace Resume_QR_Code_Verification_System.Server
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
-
-
-
 }

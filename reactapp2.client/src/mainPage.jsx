@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import FileUpload from './fileUpload.jsx';
 import DataDisplay from './dataDisplay.jsx';
 import LoginPopup from './loginPopup.jsx';
@@ -6,12 +7,35 @@ import LoginPopup from './loginPopup.jsx';
 export function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [showLoginPopup, setShowLoginPopup] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
 
-    const handleLogin = (username, password) => {
-        // Add actual authentication logic here
-        console.log("Login attempt with: Username:", username, "Password:", password);
-        setIsLoggedIn(true);
-        setShowLoginPopup(false);
+    const handleLogin = async (username, password) => {
+        setErrorMessage(null); 
+        try {
+            const API_URL = 'https://localhost:7219/api/auth/login';
+            const response = await axios.post(API_URL, {
+                Username: username,
+                Password: password
+            });
+
+            if (response.data.success) {
+                console.log(response.data.message, "User:", response.data.user) //Testing Only
+                setIsLoggedIn(true);
+                setShowLoginPopup(false);
+            } else {
+                setErrorMessage(response.data.error || "Invalid username or password");
+            }
+        } catch (error) {
+            let message = "An error occurred during login";
+            if (error.response) {
+                message = error.response.data.error;
+                //message = error.response.data.error || "Invalid credentials";
+
+            } else if (error.request) {
+                message = "Unable to connect to the server";
+            }
+            setErrorMessage(message);
+        }
     };
 
     const handleLogout = () => {
@@ -20,6 +44,13 @@ export function App() {
         }
         // Add any additional logout cleanup here
     };
+
+    const ErrorMessage = ({ message, onClose }) => (
+        <div className="error-message">
+            {message}
+            <button onClick={onClose} className="error-close">&times;</button>
+        </div>
+    );
 
     return (
         <>
@@ -52,9 +83,21 @@ export function App() {
 
             {showLoginPopup && (
                 <LoginPopup
-                    onClose={() => setShowLoginPopup(false)}
-                    onLogin={handleLogin} />
+                    onClose={() => {
+                        setShowLoginPopup(false);
+                        setErrorMessage(null);
+                    }}
+                    onLogin={handleLogin}
+                    error={errorMessage}  
+                />
             )}
+            {errorMessage && (
+                <ErrorMessage
+                    message={errorMessage}
+                    onClose={() => setErrorMessage(null)}
+                />
+            )}
+
         </>
     );
 }

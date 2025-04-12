@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './loginPopup.css';
 
-export default function LoginPopup({ onClose, onLogin }) {
+export default function LoginPopup({ onClose, onLogin, error }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -40,6 +40,7 @@ export default function LoginPopup({ onClose, onLogin }) {
                             required
                         />
                     </div>
+                    {error && <div className="error-text">{error}</div>}
                     <button type="submit" className="login-submit">Login</button>
                 </form>
             </div>

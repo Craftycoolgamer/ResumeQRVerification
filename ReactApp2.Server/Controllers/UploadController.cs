@@ -5,14 +5,14 @@ using Resume_QR_Code_Verification_System.Server;
 using Resume_QR_Code_Verification_System.Server.Models;
 using Resume_QR_Code_Verification_System.Server.Models.DTOs;
 using Resume_QR_Code_Verification_System.Server.Services;
-using System;
-using System.Net.Mime;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Resume_QR_Code_Verification_System.Server.Controller
 {
+    //[Authorize]
     [ApiController]
-    //[Route("api/[controller]")]
+    [Route("api/[controller]")]
     public class UploadController : ControllerBase
     {
         //for testing only
@@ -22,7 +22,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
         
         //UploadCreateDto
-        [HttpPost("api/files")]
+        [HttpPost("files")]
         [RequestSizeLimit(50_000_000)] // 50MB max
         [Consumes("multipart/form-data")] // Explicitly accept form-data
         public async Task<IActionResult> CreateUpload([FromForm] UploadCreateDto model)//???
@@ -97,19 +97,16 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
-        //Update an Entity
-        //var success = GetSet.Update(modifiedUpload);
-        
 
-        [HttpGet("api/resumes")]
+        [HttpGet("resumes")]
         public IActionResult GetAllResumes()
         {
             var Uploads = GetSet.GetAll<Upload>();
             return Ok(Uploads);
         }
 
-        [HttpGet("api/download/{id}")]
-        public IActionResult DownloadResume(int id)
+        [HttpGet("download/{id}")]
+        public IActionResult DownloadFIle(int id)
         {
             try
             {
@@ -138,8 +135,8 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
-        [HttpGet("api/preview/{id}")]
-        public IActionResult PreviewResume(int id)
+        [HttpGet("preview/{id}")]
+        public IActionResult PreviewFile(int id)
         {
             try
             {
@@ -163,8 +160,8 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
-        [HttpDelete("api/delete/{id}")]
-        public IActionResult DeleteResume(int id)
+        [HttpDelete("delete/{id}")]
+        public IActionResult DeleteFile(int id)
         {
             try
             {
@@ -194,8 +191,8 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
-        [HttpPut("api/update/{id}")]
-        public IActionResult UpdateResume(int id, [FromBody] UploadUpdateDto dto)
+        [HttpPut("update/{id}")]
+        public IActionResult UpdateFile(int id, [FromBody] UploadUpdateDto dto)
         {
             try
             {

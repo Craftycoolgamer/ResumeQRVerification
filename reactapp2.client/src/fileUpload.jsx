@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import axios from 'axios';
 import "./fileUpload.css";
+import QRCode from 'qrcode';
 
 const FileUploadDropArea = () => {
     const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const FileUploadDropArea = () => {
     const [uploadStatus, setUploadStatus] = useState(null);
     const [description, setDescription] = useState("");
     const [error, setError] = useState(null);
+    //const [qrCodeData, setQrCodeData] = useState(null);
 
     // Drag and drop handlers
     const handleDragEnter = useCallback((e) => {
@@ -81,7 +83,7 @@ const FileUploadDropArea = () => {
             setUploadProgress(0);
 
             // Send data to backend (matches UploadCreateDto structure)
-            const API_URL = 'https://localhost:7219/api/upload/files'; 
+            const API_URL = 'https://localhost:7219/api/resumes'; 
             const response = await axios.post(API_URL, uploadData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
                 onUploadProgress: (progressEvent) => {
@@ -89,10 +91,26 @@ const FileUploadDropArea = () => {
                 }
             });
 
+            // Generate QR code after successful upload
+            const qrCodeDataURL = await QRCode.toDataURL(
+                `https://localhost:7219/api/verify/${response.data.id}`
+            );
+
+            // Create download link
+            const link = document.createElement('a');
+            link.download = `QR_${response.data.id}.png`;
+            link.href = qrCodeDataURL;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+
+
             console.log('Upload success:', response.data);
-            setUploadStatus(null);
-            //setUploadStatus('success');
-            //resetForm();
+            //setQrCodeData(response.data.id);
+            //setUploadStatus(null);
+            setUploadStatus('success');
+            resetForm();
         } catch (error) {
             //console.error('Upload failed:', error.response.data || error.message);
             setUploadStatus('error');
@@ -221,7 +239,7 @@ const FileUploadDropArea = () => {
             )}
 
             {uploadStatus === 'success' && (
-                <div className="status-message status-success">Upload successful!</div>
+                <div className="status-message status-success">Upload successful! QR code downloaded automatically.</div>
             )}
 
             {uploadStatus === 'error' && (

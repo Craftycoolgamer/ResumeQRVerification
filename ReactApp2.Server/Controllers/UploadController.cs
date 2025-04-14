@@ -7,12 +7,13 @@ using Resume_QR_Code_Verification_System.Server.Models.DTOs;
 using Resume_QR_Code_Verification_System.Server.Services;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Resume_QR_Code_Verification_System.Server.Controller
 {
     //[Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/")]
     public class UploadController : ControllerBase
     {
         //for testing only
@@ -21,8 +22,8 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
 
         
-        //UploadCreateDto
-        [HttpPost("files")]
+        //Post
+        [HttpPost("resumes")]
         [RequestSizeLimit(50_000_000)] // 50MB max
         [Consumes("multipart/form-data")] // Explicitly accept form-data
         public async Task<IActionResult> CreateUpload([FromForm] UploadCreateDto model)//???
@@ -53,10 +54,6 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                     });
                 }
 
-
-
-
-
                 // Generate safe filename
                 var safeFileName = $"{Guid.NewGuid()}{fileExtension}";
                 var filePath = Path.Combine(DbService.UploadPath, safeFileName);
@@ -71,7 +68,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
                 // Save to database
                 Upload newUpload = new Upload(1, model.File.FileName, safeFileName,
-                    model.File.ContentType, model.File.Length, model.Description, DateTime.UtcNow, filePath);
+                    model.File.ContentType, model.File.Length, model.Description, filePath);
                 GetSet.Insert(newUpload);
                 
 
@@ -97,7 +94,24 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
+        [HttpPost("companies")]
+        public IActionResult CreateCompany([FromBody] CompanyCreateDto dto)
+        {
+            //Console.WriteLine("yay");
+            var newCompany = new Company
+            {
+                CompanyName = dto.CompanyName,
+                Description = dto.Description
+            };
 
+            var result = GetSet.Insert(newCompany);
+            return result ? CreatedAtAction(nameof(GetCompanyById), new { id = newCompany.Id }, newCompany)
+                          : StatusCode(500, "Failed to create company");
+        }
+
+
+
+        //Get
         [HttpGet("resumes")]
         public IActionResult GetAllResumes()
         {
@@ -105,8 +119,32 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             return Ok(Uploads);
         }
 
+        [HttpGet("companies")]
+        public IActionResult GetAllCompanies()
+        {
+            var companies = GetSet.GetAll<Company>();
+            return Ok(companies);
+        }
+
+        [HttpGet("users")]
+        public IActionResult GetAllUsers()
+        {
+            var users = GetSet.GetAll<User>();
+            return Ok(users);
+        }
+
+        [HttpGet("companies/{id}")]
+        public IActionResult GetCompanyById(int id)
+        {
+            var company = GetSet.GetById<Company>(id);
+            if (company == null) return NotFound();
+            return Ok(company);
+        }
+
+        
+
         [HttpGet("download/{id}")]
-        public IActionResult DownloadFIle(int id)
+        public IActionResult DownloadFile(int id)
         {
             try
             {
@@ -160,6 +198,8 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
+
+        //Delete
         [HttpDelete("delete/{id}")]
         public IActionResult DeleteFile(int id)
         {
@@ -191,6 +231,32 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
+        [HttpDelete("company/{id}")]
+        public IActionResult DeleteCompany(int id)
+        {
+            //TODO: when deleting company, should also delete any resumes and users associated with it
+
+            var company = GetSet.GetById<Company>(id);
+            if (company == null) return NotFound();
+
+            var result = GetSet.Delete<Company>(id);
+            //Console.WriteLine(result);
+            return result ? NoContent() : StatusCode(500, "Failed to delete Company");
+        }
+
+        [HttpDelete("user/{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            var user = GetSet.GetById<User>(id);
+            if (user == null) return NotFound();
+
+            var result = GetSet.Delete<User>(id);
+            Console.WriteLine(result);
+            return result ? NoContent() : StatusCode(500, "Failed to delete User");
+        }
+
+
+        //Put
         [HttpPut("update/{id}")]
         public IActionResult UpdateFile(int id, [FromBody] UploadUpdateDto dto)
         {
@@ -215,6 +281,59 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                     message = "Error updating file"
                 });
             }
+        }
+
+        [HttpPut("verify/{id}")]
+        public IActionResult VerifyFile(int id)
+        {
+            try
+            {
+                var upload = GetSet.GetById<Upload>(id);
+                if (upload == null) return NotFound("File not found");
+
+                upload.Verified = true;
+                bool success = GetSet.Update(upload);
+
+                return success ? Ok(new { success = true })
+                              : StatusCode(500, new { success = false });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    error = ex.Message,
+                    message = "Error verifying file"
+                });
+            }
+        }
+
+        [HttpPut("company/{id}")]
+        public IActionResult UpdateCompany(int id, [FromBody] CompanyUpdateDto dto)
+        {
+            var existingCompany = GetSet.GetById<Company>(id);
+            if (existingCompany == null) return NotFound();
+
+            existingCompany.CompanyName = dto.CompanyName;
+            existingCompany.Description = dto.Description;
+
+            var result = GetSet.Update(existingCompany);
+            return result ? Ok(existingCompany) : StatusCode(500, "Failed to update company");
+        }
+
+        [HttpPut("user/{id}")]
+        public IActionResult UpdateUser(int id, [FromBody] UserUpdateDto dto)
+        {
+            //TODO: only update if user enters correct old password
+
+            var existingUser = GetSet.GetById<User>(id);
+            if (existingUser == null) return NotFound();
+
+            existingUser.Username = dto.Username;
+            existingUser.PasswordHash = BC.HashPassword(dto.Password, BC.GenerateSalt(12));
+
+            var result = GetSet.Update(existingUser);
+            return result ? Ok(existingUser) : StatusCode(500, "Failed to update company");
         }
 
 

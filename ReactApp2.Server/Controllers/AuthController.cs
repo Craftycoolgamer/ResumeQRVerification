@@ -3,6 +3,7 @@ using Resume_QR_Code_Verification_System.Server.Models.DTOs;
 using Resume_QR_Code_Verification_System.Server.Models;
 using BC = BCrypt.Net.BCrypt;
 using System;
+using static SQLite.SQLite3;
 
 namespace Resume_QR_Code_Verification_System.Server.Controller
 {
@@ -89,8 +90,16 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                 // Save to database
                 var success = GetSet.Insert(newUser);
 
-                return success ? Ok(new { success = true, message = "Registration successful" })
-                              : StatusCode(500, new { success = false, error = "Database error" });
+                Console.WriteLine(success);
+
+                //return success ? Ok(new { success = true, message = "Registration successful" })
+                //              : StatusCode(500, new { success = false, error = "Database error" });
+
+
+                return success ? CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser)
+                          : StatusCode(500, "Failed to create company");
+
+
             }
             catch (Exception ex)
             {
@@ -103,6 +112,14 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             }
         }
 
+
+        [HttpGet("users/{id}")]
+        public IActionResult GetUserById(int id)
+        {
+            var user = GetSet.GetById<User>(id);
+            if (user == null) return NotFound();
+            return Ok(user);
+        }
 
 
     }

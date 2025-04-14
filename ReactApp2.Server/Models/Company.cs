@@ -13,5 +13,7 @@ namespace Resume_QR_Code_Verification_System.Server.Models
         [MaxLength(255)]
         public string? CompanyName { get; set; }
 
+        public string? Description { get; set; }
+
     }
 }

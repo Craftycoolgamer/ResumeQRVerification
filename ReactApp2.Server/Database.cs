@@ -16,11 +16,11 @@ namespace Resume_QR_Code_Verification_System.Server
         public DbService(IConfiguration config, IWebHostEnvironment env)
         {
             _config = config;
-            UploadPath = _config["FileStorage:Path"] ?? Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            UploadPath = _config["FileStorage:Path"] ?? Path.Combine(Directory.GetCurrentDirectory(), "app_data");
 
             DBPath = Path.Combine(
                 env.ContentRootPath,
-                "App_Data",
+                "app_data",
                 "FileStorage.db"
             );
 
@@ -80,7 +80,6 @@ namespace Resume_QR_Code_Verification_System.Server
         }
 
     }
-
 
 
 

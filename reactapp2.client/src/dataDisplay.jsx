@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './dataDisplay.css';
+import QrScanner from './QrScanner';
 
 const DataDisplayArea = () => {
     const [data, setData] = useState([]);
@@ -10,6 +11,31 @@ const DataDisplayArea = () => {
     const [editingItem, setEditingItem] = useState(null);
     const [editDescription, setEditDescription] = useState('');
     const [previewUrl, setPreviewUrl] = useState(null);
+    const [scanning, setScanning] = useState(false);
+
+    const [showReportsDropdown, setShowReportsDropdown] = useState(false);
+    const [reportType, setReportType] = useState(null);
+    const [reportData, setReportData] = useState([]);
+
+    const [selectedCompany, setSelectedCompany] = useState(null);
+    const [showCompanyModal, setShowCompanyModal] = useState(false);
+    const [companies, setCompanies] = useState([]);
+    const [newCompanyName, setNewCompanyName] = useState('');
+    const [newCompanyDescription, setNewCompanyDescription] = useState('');
+
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [showUserModal, setShowUserModal] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [newUsername, setNewUsername] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+
+
+    //TODO: use the filename instead of id, then when scanned get the id then use the axios put id
+
+    //TODO: Add reports dropdown button that shows # of resumes per company, per month, per year
+
+    //TODO: clean up code and webcam ui
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -17,7 +43,7 @@ const DataDisplayArea = () => {
             //    .then(r => console.log(r.data))
 
             try {
-                const response = await axios.get('https://localhost:7219/api/upload/resumes');
+                const response = await axios.get('https://localhost:7219/api/resumes');
                 const result = response.data; // Axios automatically parses JSON
                 //console.log("Result: ", result);
 
@@ -27,7 +53,8 @@ const DataDisplayArea = () => {
                     fileName: item.fileName,
                     description: item.description,
                     uploadDate: new Date(item.uploadDate).toLocaleDateString(),
-                    fileSize: `${Math.round(item.fileSize / 1024)} KB`
+                    fileSize: `${Math.round(item.fileSize / 1024)} KB`,
+                    verified: item.verified
                 }));
                 //console.log("Mapped Data: ", mappedData);
 
@@ -43,18 +70,68 @@ const DataDisplayArea = () => {
             }
         };
 
+        const fetchCompanies = async () => {
+            try {
+                const response = await axios.get('https://localhost:7219/api/companies');
+                setCompanies(response.data);
+            } catch (error) {
+                alert('Failed to load companies: ' + error.message);
+            }
+        };
+
+        if (showCompanyModal) {
+            fetchCompanies();
+        }
+
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get('https://localhost:7219/api/users');
+                setUsers(response.data);
+            } catch (error) {
+                alert('Failed to load companies: ' + error.message);
+            }
+        };
+
+        if (showUserModal) {
+            fetchUsers();
+        }
+
         fetchData();
-    }, []);
+    }, [showCompanyModal, showUserModal]);
 
     // Filter data based on search term
     const filteredData = data.filter(item =>
-        item.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (item.description && item.description.toLowerCase().includes(searchTerm.toLowerCase()))
+        item.verified &&
+        (item.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (item.description && item.description.toLowerCase().includes(searchTerm.toLowerCase())))
     );
 
     const handleScan = () => {
-        // Add your scan functionality here
-        alert('Scan button clicked!');
+        setScanning(true);
+    };
+    
+    const handleScanResult = async (result) => {
+        if (!result) return;
+
+        try {
+            // Extract ID from URL format: https://localhost:7219/api/verify/id
+            const url = new URL(result);
+            const id = url.pathname.split('/').pop();
+
+            await axios.put(`https://localhost:7219/api/verify/${id}`);
+
+
+            //Nope?
+            setData(data.map(item =>
+                item.id === parseInt(id) ? { ...item, verified: true } : item
+            ));
+
+            setScanning(false);
+            alert('Verification successful!');
+        } catch (error) {
+            alert(`Verification failed: ${error.response?.data?.message || error.message}`);
+            setScanning(false);
+        }
     };
 
     const handleDownload = async (id, fileName) => {
@@ -125,6 +202,153 @@ const DataDisplayArea = () => {
         }
     };
 
+    const handleAddCompany = () => {
+        setNewCompanyName('');
+        setNewCompanyDescription('');
+        setShowCompanyModal(true);
+    };
+
+    const handleSaveCompany = async () => {
+        if (!newCompanyName) {
+            alert('Company name is required');
+            return;
+        }
+
+        try {
+            const companyData = {
+                CompanyName: newCompanyName,
+                Description: newCompanyDescription
+            };
+
+            let response;
+
+            if (selectedCompany) {
+                response = await axios.put(
+                    `https://localhost:7219/api/company/${selectedCompany.id}`,
+                    companyData
+                );
+                setCompanies(companies.map(c => c.id === selectedCompany.id ? response.data : c));
+            } else {
+                response = await axios.post(
+                    'https://localhost:7219/api/companies',
+                    companyData
+                );
+                setCompanies([...companies, response.data]);
+            }
+
+            setNewCompanyName('');
+            setSelectedCompany(null);
+            alert(selectedCompany ? 'Company updated!' : 'Company added!');
+        } catch (error) {
+            alert(`Operation failed: ${error.response?.data?.message || error.message}`);
+        }
+    };
+
+    const handleAddUser = () => {
+        setNewUsername('');
+        setNewPassword('');
+        setShowUserModal(true);
+    };
+
+    const handleSaveUser = async () => {
+        if (!newUsername || !newPassword) {
+            alert('Username and Password are required');
+            return;
+        }
+
+        try {
+            const userData = {
+                Username: newUsername,
+                Password: newPassword
+            };
+
+            let response;
+
+            if (selectedUser) {
+                response = await axios.put(
+                    `https://localhost:7219/api/user/${selectedUser.id}`,
+                    userData
+                );
+                setUsers(users.map(c => c.id === selectedUser.id ? response.data : c));
+            } else {
+                response = await axios.post(
+                    'https://localhost:7219/api/auth/register',
+                    userData
+                );
+                setUsers([...users, response.data]);
+            }
+
+            setNewUsername('');
+            setNewPassword('');
+            setSelectedUser(null);
+            alert(selectedUser ? 'updated!' : 'added!');
+        } catch (error) {
+            alert(`Operation failed: ${error.response?.data?.message || error.message}`);
+        }
+    };
+
+
+
+
+
+
+    const handleReportSelect = (type) => {
+        let computedData = [];
+
+        switch (type) {
+            case 'company':
+                { const companyCounts = data.reduce((acc, item) => {
+                    const company = companies.find(c => c.id === item.companyId);
+                    const companyName = company ? company.companyName : 'Unknown';
+                    acc[companyName] = (acc[companyName] || 0) + 1;
+                    return acc;
+                }, {});
+                computedData = Object.entries(companyCounts).map(([name, count]) => ({
+                    name,
+                    count
+                }));
+                break; }
+
+            case 'month':
+                { const monthCounts = data.reduce((acc, item) => {
+                    const monthYear = item.uploadDate.toLocaleString('default', { month: 'short', year: 'numeric' });
+                    acc[monthYear] = (acc[monthYear] || 0) + 1;
+                    return acc;
+                }, {});
+                computedData = Object.entries(monthCounts).map(([period, count]) => ({
+                    period,
+                    count
+                }));
+                break; }
+
+            case 'year':
+                { const yearCounts = data.reduce((acc, item) => {
+                    const year = item.uploadDate.getFullYear();
+                    acc[year] = (acc[year] || 0) + 1;
+                    return acc;
+                }, {});
+                computedData = Object.entries(yearCounts).map(([year, count]) => ({
+                    year,
+                    count
+                }));
+                break; }
+
+            default:
+                break;
+        }
+
+        setReportData(computedData);
+        setReportType(type);
+        setShowReportsDropdown(false);
+    };
+
+
+
+
+
+
+
+
     if (loading) return <div className="content-container">Loading resumes...</div>;
     if (error) {
         return (
@@ -145,6 +369,29 @@ const DataDisplayArea = () => {
                 <button className="scan-button" onClick={handleScan}>
                     Scan Resumes
                 </button>
+                
+                <div className="reports-container">
+                    <button
+                        className="reports-button"
+                        onClick={() => setShowReportsDropdown(!showReportsDropdown)}
+                    >
+                        Reports ▼
+                    </button>
+                    {showReportsDropdown && (
+                        <div className="reports-dropdown">
+                            <button onClick={() => handleReportSelect('company')}>Per Company</button>
+                            <button onClick={() => handleReportSelect('month')}>Per Month</button>
+                            <button onClick={() => handleReportSelect('year')}>Per Year</button>
+                        </div>
+                    )}
+                </div>
+                <button className="add-button" onClick={handleAddCompany}>
+                    Add Company
+                </button>
+                <button className="add-button" onClick={handleAddUser}>
+                    Add User
+                </button>
+
                 <div className="search-container">
                     <input
                         type="text"
@@ -161,6 +408,7 @@ const DataDisplayArea = () => {
                     <div className="header-cell">Description</div>
                     <div className="header-cell">Upload Date</div>
                     <div className="header-cell">Size</div>
+                    <div className="header-cell">Verified</div>
                     <div className="header-cell">Actions</div>
                 </div>
 
@@ -170,6 +418,7 @@ const DataDisplayArea = () => {
                         <div className="table-cell">{item.description || "No description"}</div>
                         <div className="table-cell">{item.uploadDate}</div>
                         <div className="table-cell">{item.fileSize}</div>
+                        <div className="table-cell">{item.verified ? '✅' : '❌'}</div>
                         <div className="table-cell actions-cell">
                             <button
                                 className="action-button view-button"
@@ -234,6 +483,179 @@ const DataDisplayArea = () => {
                     </div>
                 </div>
             )}
+            {scanning && (
+                <div className="scanner-modal">
+                    <div className="scanner-content">
+                        <QrScanner
+                            onScan={handleScanResult}
+                            onError={(error) => console.error('Scanner error:', error)}
+                        />
+                        <button
+                            className="cancel-scan-button"
+                            onClick={() => setScanning(false)}
+                        >
+                            Close Scanner
+                        </button>
+                    </div>
+                </div>
+            )}
+            {showCompanyModal && (
+                <div className="company-modal">
+                    <div className="modal-content">
+                        <h2>Manage Companies</h2>
+
+                        <div className="form-group">
+                            <label>Select Company:</label>
+                            <select
+                                value={selectedCompany?.id || ''}
+                                onChange={(e) => {
+                                    const company = companies.find(c => c.id === parseInt(e.target.value));
+                                    setSelectedCompany(company || null);
+                                    setNewCompanyName(company?.companyName || '');
+                                    setNewCompanyDescription(company?.description || '');
+                                }}
+                            >
+                                <option value="">-- Create New Company --</option>
+                                {companies.map(company => (
+                                    <option key={company.id} value={company.id}>
+                                        {company.companyName}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Company Name:</label>
+                            <input
+                                type="text"
+                                value={newCompanyName}
+                                onChange={(e) => setNewCompanyName(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="modal-buttons">
+                            <button
+                                className="action-button delete-button"
+                                onClick={async () => {
+                                    if (window.confirm(`Delete ${selectedCompany.companyName}?`)) {
+                                        try {
+                                            await axios.delete(`https://localhost:7219/api/company/${selectedCompany.id}`);
+                                            setCompanies(companies.filter(c => c.id !== selectedCompany.id));
+                                            setSelectedCompany(null);
+                                            setNewCompanyName('');
+                                            //setNewCompanyDescription('');
+                                        } catch (error) {
+                                            alert('Delete failed: ' + error.message);
+                                        }
+                                    }
+                                }}
+                                disabled={!selectedCompany}
+                            >
+                                Delete
+                            </button>
+
+                            <div className="right-buttons">
+                                <button className="action-button save-button" onClick={handleSaveCompany}>
+                                    {selectedCompany ? 'Update' : 'Save'}
+                                </button>
+                                <button className="cancel-button" onClick={() => setShowCompanyModal(false)}>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
+
+
+
+            {showUserModal && (
+                <div className="company-modal">
+                    <div className="modal-content">
+                        <h2>Manage Users</h2>
+
+                        <div className="form-group">
+                            <label>Select User:</label>
+                            <select
+                                value={selectedUser?.id || ''}
+                                onChange={(e) => {
+                                    const user = users.find(c => c.id === parseInt(e.target.value));
+                                    setSelectedUser(user || null);
+                                    setNewUsername(user?.username || '');
+                                    setNewPassword('');
+                                }}
+                            >
+                                <option value="">-- Create New User --</option>
+                                {users.map(user => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.username}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Username:</label>
+                            <input
+                                type="text"
+                                value={newUsername}
+                                onChange={(e) => setNewUsername(e.target.value)}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Password:</label>
+                            <input
+                                type="text"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="modal-buttons">
+                            <button
+                                className="action-button delete-button"
+                                onClick={async () => {
+                                    if (window.confirm(`Delete ${selectedUser.username}?`)) {
+                                        try {
+                                            await axios.delete(`https://localhost:7219/api/user/${selectedUser.id}`);
+                                            setUsers(users.filter(c => c.id !== selectedUser.id));
+                                            setSelectedUser(null);
+                                            setNewUsername('');
+                                            setNewPassword('');
+                                        } catch (error) {
+                                            alert('Delete failed: ' + error.message);
+                                        }
+                                    }
+                                }}
+                                disabled={!selectedUser}
+                            >
+                                Delete
+                            </button>
+
+                            <div className="right-buttons">
+                                <button className="action-button save-button" onClick={handleSaveUser}>
+                                    {selectedUser ? 'Update' : 'Save'}
+                                </button>
+                                <button className="cancel-button" onClick={() => setShowUserModal(false)}>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
+
+
+
+
+
+
+
+
         </div>
     );
 }

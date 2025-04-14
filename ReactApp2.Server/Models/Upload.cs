@@ -9,7 +9,7 @@ namespace Resume_QR_Code_Verification_System.Server.Models
         public Upload() : base() { }
         
         public Upload(int companyId, string fileName, string storedFileName, string contentType,
-                      long fileSize, string? description, DateTime uploadDate, string filePath) 
+                      long fileSize, string? description, string filePath) 
         {
             CompanyId = companyId;
             FileName = fileName;
@@ -17,7 +17,6 @@ namespace Resume_QR_Code_Verification_System.Server.Models
             ContentType = contentType;
             FileSize = fileSize;
             Description = description;
-            UploadDate = uploadDate;
             FilePath = filePath;
         }
 
@@ -28,6 +27,8 @@ namespace Resume_QR_Code_Verification_System.Server.Models
 
         //[Indexed] // Improves query performance for foreign key
         public int CompanyId { get; set; }
+
+        public bool Verified { get; set; } = false;
 
         [NotNull]
         public string FileName { get; set; }
@@ -41,6 +42,8 @@ namespace Resume_QR_Code_Verification_System.Server.Models
         public string? Description { get; set; }
 
         public DateTime? UploadDate { get; set; } = DateTime.UtcNow;
+
+        public DateTime? ScannedDate { get; set; }
 
         public string? FilePath { get; set; }
     }

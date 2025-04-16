@@ -5,7 +5,7 @@ import DataDisplay from './dataDisplay.jsx';
 import LoginPopup from './loginPopup.jsx';
 
 export function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showLoginPopup, setShowLoginPopup] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
 
@@ -19,7 +19,7 @@ export function App() {
             });
 
             if (response.data.success) {
-                console.log(response.data.message, "User:", response.data.user) //Testing Only
+                //console.log(response.data.message, "User:", response.data.user) //Testing Only
                 setIsLoggedIn(true);
                 setShowLoginPopup(false);
             } else {
@@ -30,7 +30,6 @@ export function App() {
             if (error.response) {
                 message = error.response.data.error;
                 //message = error.response.data.error || "Invalid credentials";
-
             } else if (error.request) {
                 message = "Unable to connect to the server";
             }
@@ -42,7 +41,7 @@ export function App() {
         if (window.confirm("Are you sure you want to log out?")) {
             setIsLoggedIn(false);
         }
-        // Add any additional logout cleanup here
+        // Logout cleanup here
     };
 
     const ErrorMessage = ({ message, onClose }) => (

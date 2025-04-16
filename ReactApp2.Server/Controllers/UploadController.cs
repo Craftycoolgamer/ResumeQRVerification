@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Resume_QR_Code_Verification_System.Server;
 using Resume_QR_Code_Verification_System.Server.Models;
 using Resume_QR_Code_Verification_System.Server.Models.DTOs;
-using Resume_QR_Code_Verification_System.Server.Services;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using BC = BCrypt.Net.BCrypt;
@@ -17,16 +16,14 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
     public class UploadController : ControllerBase
     {
         //for testing only
-        [HttpGet("test")]
-        public string Get() => "Hello world";
-
-
+        //[HttpGet("test")]
+        //public string Get() => "Hello world";
         
         //Post
         [HttpPost("resumes")]
         [RequestSizeLimit(50_000_000)] // 50MB max
         [Consumes("multipart/form-data")] // Explicitly accept form-data
-        public async Task<IActionResult> CreateUpload([FromForm] UploadCreateDto model)//???
+        public async Task<IActionResult> CreateUpload([FromForm] UploadCreateDto dto)//???
         {
             try
             {
@@ -35,52 +32,69 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                 {
                     return BadRequest(ModelState);
                 }
-                if (model.File == null || model.File.Length == 0)
+                if (dto.File == null || dto.File.Length == 0)
                 {
                     return BadRequest(new { success = false, error = "No file uploaded" });
                 }
-                var allowedExtensions = new[] { ".pdf", ".jpg", ".png", ".jpeg" };
-                var fileExtension = Path.GetExtension(model.File.FileName).ToLower();
-                
-                //TODO: Validate input field (phone, email)
 
-
-                if (!allowedExtensions.Contains(fileExtension))
-                {
-                    return BadRequest(new
-                    {
-                        success = false,
-                        error = $"Invalid file type. Allowed types: {string.Join(", ", allowedExtensions)}"
-                    });
-                }
-
+                var fileExtension = Path.GetExtension(dto.File.FileName).ToLower();
+                Console.Write(fileExtension);
                 // Generate safe filename
                 var safeFileName = $"{Guid.NewGuid()}{fileExtension}";
                 var filePath = Path.Combine(DbService.UploadPath, safeFileName);
+
+                Upload newUpload = fileExtension switch
+                {
+                    ".pdf" or ".docx" => new ResumeUpload
+                    {
+                        CompanyId = dto.Company,
+                        FullName = dto.Name,
+                        FileName = dto.File.FileName,
+                        StoredFileName = safeFileName,
+                        ContentType = dto.File.ContentType,
+                        FileSize = dto.File.Length,
+                        Description = dto.Description,
+                        FilePath = filePath
+                    },
+                    ".jpg" or ".png" or ".jpeg" => new ImageUpload{
+                        CompanyId = dto.Company,
+                        FullName = dto.Name,
+                        FileName = dto.File.FileName,
+                        StoredFileName = safeFileName,
+                        ContentType = dto.File.ContentType,
+                        FileSize = dto.File.Length,
+                        Description = dto.Description,
+                        FilePath = filePath
+                    },
+                    _ => throw new ArgumentException("Invalid upload type")
+                };
+
+                if (!newUpload.Validate())
+                {
+                    return BadRequest(new { success = false, error = "Invalid file type" });
+                }
+
+                var success = GetSet.Insert(newUpload);
 
 
                 // Save file
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    await model.File.CopyToAsync(stream);
+                    await dto.File.CopyToAsync(stream);
                 }
 
-
-                // Save to database
-                Upload newUpload = new Upload(1, model.File.FileName, safeFileName,
-                    model.File.ContentType, model.File.Length, model.Description, filePath);
-                GetSet.Insert(newUpload);
-                
-
-                return Ok(new
+                if (success)
                 {
-                    success = true,
-                    id = newUpload.Id,
-                    name = newUpload.FileName,
-                    size = newUpload.FileSize,
-                    message = "File uploaded successfully"
+                    return Ok(new
+                    {
+                        success = true,
+                        id = newUpload.Id,
+                        name = newUpload.FileName,
+                        message = "File uploaded successfully"
 
-                });
+                    });
+                }
+                throw new InvalidOperationException("File uploaded Unsuccessfully");
             }
             catch (Exception ex)
             {
@@ -110,13 +124,12 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         }
 
 
-
         //Get
         [HttpGet("resumes")]
         public IActionResult GetAllResumes()
         {
-            var Uploads = GetSet.GetAll<Upload>();
-            return Ok(Uploads);
+            var uploads = GetSet.GetAll<Upload>();
+            return Ok(uploads);
         }
 
         [HttpGet("companies")]
@@ -140,8 +153,6 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             if (company == null) return NotFound();
             return Ok(company);
         }
-
-        
 
         [HttpGet("download/{id}")]
         public IActionResult DownloadFile(int id)
@@ -292,6 +303,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                 if (upload == null) return NotFound("File not found");
 
                 upload.Verified = true;
+                upload.ScannedDate = DateTime.UtcNow;
                 bool success = GetSet.Update(upload);
 
                 return success ? Ok(new { success = true })
@@ -335,8 +347,6 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             var result = GetSet.Update(existingUser);
             return result ? Ok(existingUser) : StatusCode(500, "Failed to update company");
         }
-
-
 
     }
 }

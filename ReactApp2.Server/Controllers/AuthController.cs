@@ -89,17 +89,10 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
                 // Save to database
                 var success = GetSet.Insert(newUser);
-
-                Console.WriteLine(success);
-
-                //return success ? Ok(new { success = true, message = "Registration successful" })
-                //              : StatusCode(500, new { success = false, error = "Database error" });
-
+                //Console.WriteLine(success);
 
                 return success ? CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser)
                           : StatusCode(500, "Failed to create company");
-
-
             }
             catch (Exception ex)
             {

@@ -30,41 +30,30 @@ const DataDisplayArea = () => {
     const [newPassword, setNewPassword] = useState('');
 
 
-    //TODO: use the filename instead of id, then when scanned get the id then use the axios put id
-
-    //TODO: Add reports dropdown button that shows # of resumes per company, per month, per year
-
-    //TODO: clean up code and webcam ui
-
+    //TODO: use the filename for qrcode instead of id, then when scanned get the id then use the axios put id
 
     useEffect(() => {
         const fetchData = async () => {
-            //axios.get('https://localhost:7219/test')
-            //    .then(r => console.log(r.data))
 
             try {
                 const response = await axios.get('https://localhost:7219/api/resumes');
                 const result = response.data; // Axios automatically parses JSON
-                //console.log("Result: ", result);
 
                 // Map backend fields to frontend display
-                const mappedData = result.map(item => ({
+                const mappedData = result.map(item => (
+                    {
                     id: item.id, 
+                    companyId: item.companyId,
                     fileName: item.fileName,
                     description: item.description,
-                    uploadDate: new Date(item.uploadDate).toLocaleDateString(),
+                    uploadDate: new Date(item.uploadDate),
                     fileSize: `${Math.round(item.fileSize / 1024)} KB`,
                     verified: item.verified
                 }));
-                //console.log("Mapped Data: ", mappedData);
-
                 setData(mappedData);
-                
             } catch (err) {
                 console.error("API Error:", err); // Log detailed error
                 setError(err.message);
-
-                
             } finally {
                 setLoading(false);
             }
@@ -79,10 +68,6 @@ const DataDisplayArea = () => {
             }
         };
 
-        if (showCompanyModal) {
-            fetchCompanies();
-        }
-
         const fetchUsers = async () => {
             try {
                 const response = await axios.get('https://localhost:7219/api/users');
@@ -92,19 +77,28 @@ const DataDisplayArea = () => {
             }
         };
 
+
         if (showUserModal) {
             fetchUsers();
         }
-
+        fetchCompanies();
         fetchData();
     }, [showCompanyModal, showUserModal]);
 
     // Filter data based on search term
-    const filteredData = data.filter(item =>
-        item.verified &&
-        (item.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (item.description && item.description.toLowerCase().includes(searchTerm.toLowerCase())))
-    );
+    const filteredData = data.filter(item => {
+        if (!item.verified) return false;
+
+        const company = companies.find(c => c.id === item.companyId);
+        const companyName = company ? company.companyName : 'Unknown';
+        const lowerSearch = searchTerm.toLowerCase();
+
+        return (
+            item.fileName.toLowerCase().includes(lowerSearch) ||
+            (item.description && item.description.toLowerCase().includes(lowerSearch)) ||
+            companyName.toLowerCase().includes(lowerSearch)
+        );
+    });
 
     const handleScan = () => {
         setScanning(true);
@@ -120,8 +114,6 @@ const DataDisplayArea = () => {
 
             await axios.put(`https://localhost:7219/api/verify/${id}`);
 
-
-            //Nope?
             setData(data.map(item =>
                 item.id === parseInt(id) ? { ...item, verified: true } : item
             ));
@@ -178,9 +170,7 @@ const DataDisplayArea = () => {
             );
 
             setData(data.map(item =>
-                item.id === editingItem.id
-                    ? { ...item, description: editDescription }
-                    : item
+                item.id === editingItem.id ? { ...item, description: editDescription } : item
             ));
             setEditingItem(null);
         } catch (error) {
@@ -219,9 +209,7 @@ const DataDisplayArea = () => {
                 CompanyName: newCompanyName,
                 Description: newCompanyDescription
             };
-
             let response;
-
             if (selectedCompany) {
                 response = await axios.put(
                     `https://localhost:7219/api/company/${selectedCompany.id}`,
@@ -261,9 +249,7 @@ const DataDisplayArea = () => {
                 Username: newUsername,
                 Password: newPassword
             };
-
             let response;
-
             if (selectedUser) {
                 response = await axios.put(
                     `https://localhost:7219/api/user/${selectedUser.id}`,
@@ -286,11 +272,6 @@ const DataDisplayArea = () => {
             alert(`Operation failed: ${error.response?.data?.message || error.message}`);
         }
     };
-
-
-
-
-
 
     const handleReportSelect = (type) => {
         let computedData = [];
@@ -331,7 +312,21 @@ const DataDisplayArea = () => {
                     year,
                     count
                 }));
-                break; }
+                    break;
+                }
+            case 'fileType':
+                {
+                    const typeCounts = data.reduce((acc, item) => {
+                        const type = item.fileName.split('.').pop().toLowerCase();
+                        acc[type] = (acc[type] || 0) + 1;
+                        return acc;
+                    }, {});
+                    computedData = Object.entries(typeCounts).map(([type, count]) => ({
+                        type,
+                        count
+                    }));
+                    break;
+                }
 
             default:
                 break;
@@ -341,11 +336,6 @@ const DataDisplayArea = () => {
         setReportType(type);
         setShowReportsDropdown(false);
     };
-
-
-
-
-
 
 
 
@@ -366,10 +356,18 @@ const DataDisplayArea = () => {
     return (
         <div className="content-container">
             <div className="right-controls">
+                <button className="add-button" onClick={handleAddCompany}>
+                    Add Company
+                </button>
+
+                <button className="add-button" onClick={handleAddUser}>
+                    Add User
+                </button>
+
                 <button className="scan-button" onClick={handleScan}>
                     Scan Resumes
                 </button>
-                
+
                 <div className="reports-container">
                     <button
                         className="reports-button"
@@ -380,17 +378,25 @@ const DataDisplayArea = () => {
                     {showReportsDropdown && (
                         <div className="reports-dropdown">
                             <button onClick={() => handleReportSelect('company')}>Per Company</button>
+                            <button onClick={() => handleReportSelect('fileType')}>Per File Type</button>
                             <button onClick={() => handleReportSelect('month')}>Per Month</button>
                             <button onClick={() => handleReportSelect('year')}>Per Year</button>
                         </div>
                     )}
                 </div>
-                <button className="add-button" onClick={handleAddCompany}>
-                    Add Company
-                </button>
-                <button className="add-button" onClick={handleAddUser}>
-                    Add User
-                </button>
+                
+                {reportType && (
+                    <button
+                        className="clear-report-button"
+                        onClick={() => {
+                            setReportType(null);
+                            setReportData([]);
+                            setShowReportsDropdown(false);
+                        }}
+                    >
+                        Back to List
+                    </button>
+                )}
 
                 <div className="search-container">
                     <input
@@ -404,22 +410,59 @@ const DataDisplayArea = () => {
 
             <div className="data-rectangle">
                 <div className="table-header">
-                    <div className="header-cell">File Name</div>
-                    <div className="header-cell">Description</div>
-                    <div className="header-cell">Upload Date</div>
-                    <div className="header-cell">Size</div>
-                    <div className="header-cell">Verified</div>
-                    <div className="header-cell">Actions</div>
+                    {reportType ? (
+                        <>
+                            <div className="header-cell">
+                                {reportType === 'company' ? 'Company' :
+                                reportType === 'month' ? 'Month' :
+                                reportType === 'fileType' ? 'File Type' :
+                                'Year'}
+                            </div>
+                            <div className="header-cell"></div>
+                            <div className="header-cell"></div>
+                            <div className="header-cell"></div>
+                            <div className="header-cell counter">Resume Count</div>
+                        </>
+                    ) : (
+                        // Normal headers
+                        <>
+                            <div className="header-cell">File Name</div>
+                            <div className="header-cell">Description</div>
+                            <div className="header-cell">Upload Date</div>
+                            <div className="header-cell">Company</div>
+                            <div className="header-cell">Verified</div>
+                            <div className="header-cell">Actions</div>
+                        </>
+                    )}
                 </div>
 
-                {filteredData.map((item) => (
-                    <div key={item.id} className="table-row">
-                        <div className="table-cell" data-label="File Name">{item.fileName}</div>
-                        <div className="table-cell">{item.description || "No description"}</div>
-                        <div className="table-cell">{item.uploadDate}</div>
-                        <div className="table-cell">{item.fileSize}</div>
-                        <div className="table-cell">{item.verified ? '✅' : '❌'}</div>
-                        <div className="table-cell actions-cell">
+                {reportType ? (
+                    reportData.map((item, index) => (
+                        <div key={index} className="table-row">
+                            <div className="table-cell">
+                                {reportType === 'company' ? item.name :
+                                reportType === 'month' ? item.period :
+                                reportType === 'fileType' ? item.type :
+                                item.year}
+                            </div>
+                            <div className="table-cell"></div>
+                            <div className="table-cell"></div>
+                            <div className="table-cell"></div>
+                            <div className="table-cell">{item.count}</div>
+                        </div>
+                    ))
+                ) : (
+                    filteredData.map((item) => (
+                        // Normal row rendering
+                        <div key={item.id} className="table-row">
+                            <div className="table-cell" data-label="File Name">{item.fileName}</div>
+                            <div className="table-cell">{item.description || "No description"}</div>
+                            <div className="table-cell">{item.uploadDate.toLocaleDateString()}</div>
+                            <div className="table-cell">
+                                {companies.find(c => c.id === item.companyId)?.companyName || 'Unknown'}
+                            </div>
+                            <div className="table-cell">{item.verified ? '✅' : '❌'}</div>
+                            <div className="table-cell actions-cell">
                             <button
                                 className="action-button view-button"
                                 onClick={() => handleView(item.id)}
@@ -444,9 +487,10 @@ const DataDisplayArea = () => {
                             >
                                 Delete
                             </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
             {editingItem && (
                 <div className="edit-modal">
@@ -528,6 +572,7 @@ const DataDisplayArea = () => {
                             <label>Company Name:</label>
                             <input
                                 type="text"
+                                className="form-input"
                                 value={newCompanyName}
                                 onChange={(e) => setNewCompanyName(e.target.value)}
                             />
@@ -566,11 +611,6 @@ const DataDisplayArea = () => {
                     </div>
                 </div>
             )}
-
-
-
-
-
             {showUserModal && (
                 <div className="company-modal">
                     <div className="modal-content">
@@ -600,6 +640,7 @@ const DataDisplayArea = () => {
                             <label>Username:</label>
                             <input
                                 type="text"
+                                className="form-input"
                                 value={newUsername}
                                 onChange={(e) => setNewUsername(e.target.value)}
                             />
@@ -607,7 +648,8 @@ const DataDisplayArea = () => {
                         <div className="form-group">
                             <label>Password:</label>
                             <input
-                                type="text"
+                                type="text" //TODO: not this
+                                className="form-input"
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
                             />
@@ -646,14 +688,6 @@ const DataDisplayArea = () => {
                     </div>
                 </div>
             )}
-
-
-
-
-
-
-
-
 
 
         </div>

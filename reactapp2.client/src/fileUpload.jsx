@@ -1,22 +1,20 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import axios from 'axios';
 import "./fileUpload.css";
 import QRCode from 'qrcode';
 
 const FileUploadDropArea = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        experience: ''
-    });
-    const [file, setFile] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploadStatus, setUploadStatus] = useState(null);
-    const [description, setDescription] = useState("");
     const [error, setError] = useState(null);
-    //const [qrCodeData, setQrCodeData] = useState(null);
+
+    const [name, setName] = useState('');
+    const [file, setFile] = useState(null);
+    const [description, setDescription] = useState("");
+
+    const [selectedCompany, setSelectedCompany] = useState(null);
+    const [companies, setCompanies] = useState([]);
 
     // Drag and drop handlers
     const handleDragEnter = useCallback((e) => {
@@ -50,33 +48,37 @@ const FileUploadDropArea = () => {
         }
     }, []);
 
-    const handleInputChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+    useEffect(() => {
+        const fetchCompanies = async () => {
+            try {
+                const response = await axios.get('https://localhost:7219/api/companies');
+                setCompanies(response.data);
+            } catch (error) {
+                alert('Failed to load companies: ' + error.message);
+            }
+        };
+        fetchCompanies();
+        
+    },[]);
 
     const handleUpload = async () => {
         //testing only
         //axios.get('https://localhost:7219/test')
         //    .then(r => console.log(r.data))
 
-        if (!file) return;
-
-        //TODO: verify there is forum data
+        if (!file || !selectedCompany || !name) {
+            window.alert('Please fill out all feilds')
+            return;
+        } 
 
         const uploadData = new FormData();
-        // Append form data
-        Object.entries(formData).forEach(([key, value]) => {
-            uploadData.append(key, value);
-        });
+        uploadData.append('Name', name);
+        uploadData.append('Company', selectedCompany.id);
+
         // Append file data
         uploadData.append('File', file);
-        if (description == "") {
-            uploadData.append('Description', "none");
+        if (description === "") {uploadData.append('Description', "none");
         } else { uploadData.append('Description', description); }
-        
 
         try {
             setUploadStatus('uploading');
@@ -104,15 +106,10 @@ const FileUploadDropArea = () => {
             link.click();
             document.body.removeChild(link);
 
-
-
-            console.log('Upload success:', response.data);
-            //setQrCodeData(response.data.id);
-            //setUploadStatus(null);
+            //console.log('Upload success:', response.data);
             setUploadStatus('success');
             resetForm();
         } catch (error) {
-            //console.error('Upload failed:', error.response.data || error.message);
             setUploadStatus('error');
             setError(error);
 
@@ -127,22 +124,15 @@ const FileUploadDropArea = () => {
                 // Something happened in setting up the request
                 console.error('Request setup error:', error.message);
             }
-            //setUploadStatus(null);
         }
     };
 
     const resetForm = () => {
-        setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            experience: ''
-        });
-        setUploadStatus(null);
+        setName('');
+        setSelectedCompany(null);
         setFile(null);
         setDescription('');
         setUploadProgress(0);
-        
     };
 
 
@@ -156,39 +146,28 @@ const FileUploadDropArea = () => {
                         className="form-input"
                         type="text"
                         name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                     />
                 </div>
                 <div className="form-row">
-                    <label className="form-label">Email:</label>
-                    <input
-                        className="form-input"
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="form-row">
-                    <label className="form-label">Phone:</label>
-                    <input
-                        className="form-input"
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="form-row">
-                    <label className="form-label">Years of Experience:</label>
-                    <input
-                        className="form-input"
-                        type="number"
-                        name="experience"
-                        value={formData.experience}
-                        onChange={handleInputChange}
-                    />
+                    <label className="form-label">Company:</label>
+                    <select
+                        name="company"
+                        className="company-dropdown"
+                        value={selectedCompany?.id || ''}
+                        onChange={(e) => {
+                            const company = companies.find(c => c.id === parseInt(e.target.value));
+                            setSelectedCompany(company);
+                        }}
+                    >
+                        <option value="">-- Select Company --</option>
+                        {companies.map(company => (
+                            <option key={company.id} value={company.id}>
+                                {company.companyName}
+                            </option>
+                        ))}
+                    </select>
                 </div>
             </div>
 
@@ -246,7 +225,6 @@ const FileUploadDropArea = () => {
                 <div className="status-message status-error">Upload failed. {error.response.data.error}</div>
             )}
 
-            {/*{file && !uploadStatus && (*/}
             <div className="button-container">
                 {file && (
                     <button className="upload-button" onClick={handleUpload}>Upload</button>

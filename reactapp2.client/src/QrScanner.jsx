@@ -51,7 +51,7 @@ const QrScanner = ({ onScan, onError }) => {
             animationFrameRef.current = requestAnimationFrame(captureAndScan);
         }
         return () => cancelAnimationFrame(animationFrameRef.current);
-    }, [isVideoReady]);
+    }, );
 
     return (
         <div className="scanner-container">
@@ -63,7 +63,7 @@ const QrScanner = ({ onScan, onError }) => {
                     width: { ideal: 1280 },
                     height: { ideal: 720 }
                 }}
-                style={{ width: '100%', borderRadius: '8px' }}
+                style={{ width: '100%', borderRadius: '14px' }}
                 onUserMedia={() => {
                     // Wait 500ms to ensure video dimensions are available
                     setTimeout(() => setIsVideoReady(true), 500);

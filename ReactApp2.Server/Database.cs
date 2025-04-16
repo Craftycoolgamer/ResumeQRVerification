@@ -36,7 +36,7 @@ namespace Resume_QR_Code_Verification_System.Server
             }
 
             CreateTables();
-            CreateTestUser();
+            SeedTestData();
 
         }
 
@@ -50,35 +50,113 @@ namespace Resume_QR_Code_Verification_System.Server
             }
         }
 
-        private void CreateTestUser()
+        public static void SeedTestData()
         {
-            try
+            // Seed Companies if empty
+            if (!GetSet.GetAll<Company>().Any())
             {
-                using (var connection = new SQLiteConnection(DBPath))
+                var company1 = new Company
                 {
-                    // Check if test user exists
-                    var testUser = connection.Table<User>()
-                        .FirstOrDefault(u => u.Username == "t");
+                    CompanyName = "Tech Innovators Inc.",
+                    Description = "Leading technology solutions provider"
+                };
+                GetSet.Insert(company1);
 
-                    if (testUser == null)
-                    {
-                        var newUser = new User
-                        {
-                            Username = "t",
-                            PasswordHash = BC.HashPassword("t", BC.GenerateSalt(12))
-                        };
-
-                        connection.Insert(newUser);
-                        Console.WriteLine("Test user created successfully");
-                    }
-                }
+                var company2 = new Company
+                {
+                    CompanyName = "Digital Future Ltd.",
+                    Description = "Digital transformation specialists"
+                };
+                GetSet.Insert(company2);
             }
-            catch (Exception ex)
+
+            // Seed Users if empty
+            if (!GetSet.GetAll<User>().Any())
             {
-                Console.WriteLine($"Error creating test user: {ex.Message}");
+                var user1 = new User
+                {
+                    CompanyId = 1,
+                    Username = "john.doe",
+                    PasswordHash = BC.HashPassword("test123", BC.GenerateSalt(12))
+                };
+                GetSet.Insert(user1);
+
+                var user2 = new User
+                {
+                    CompanyId = 1,
+                    Username = "jane.smith",
+                    PasswordHash = BC.HashPassword("test123", BC.GenerateSalt(12))
+                };
+                GetSet.Insert(user2);
+
+                var user3 = new User
+                {
+                    CompanyId = 2,
+                    Username = "mike.jones",
+                    PasswordHash = BC.HashPassword("test123", BC.GenerateSalt(12))
+                };
+                GetSet.Insert(user3);
+
+                var user4 = new User
+                {
+                    CompanyId = 2,
+                    Username = "test",
+                    PasswordHash = BC.HashPassword("test", BC.GenerateSalt(12))
+                };
+                GetSet.Insert(user4);
+            }
+
+            // Seed Uploads if empty
+            if (!GetSet.GetAll<Upload>().Any())
+            {
+                // Resume Upload
+                var upload1 = new ResumeUpload 
+                {
+                    CompanyId = 1,
+                    FullName = "John Doe",
+                    FileName = "john_resume.pdf",
+                    StoredFileName = "abc123_resume.pdf",
+                    ContentType = "application/pdf",
+                    FileSize = 102400,
+                    Description = "Senior Developer Position",
+                    FilePath = "/uploads/resumes/abc123.pdf",
+                    Verified = true,
+                    ScannedDate = DateTime.UtcNow.AddDays(-2)
+                };
+                GetSet.Insert(upload1);
+
+                // DOCX Resume
+                var upload2 = new ResumeUpload 
+                {
+                    CompanyId = 1,
+                    FullName = "Jane Smith",
+                    FileName = "jane_cv.docx",
+                    StoredFileName = "def456_cv.docx",
+                    ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    FileSize = 51200,
+                    Description = "Project Manager Application",
+                    FilePath = "/uploads/resumes/def456.docx",
+                    Verified = false
+                };
+                GetSet.Insert(upload2);
+
+                // Image Upload (if applicable)
+                var upload3 = new ImageUpload 
+                {
+                    CompanyId = 2,
+                    FullName = "Mike Johnson",
+                    FileName = "mike_portfolio.pdf",
+                    StoredFileName = "ghi789_portfolio.png",
+                    ContentType = "application/pdf",
+                    FileSize = 204800,
+                    Description = "Design Lead Submission",
+                    FilePath = "/uploads/portfolios/ghi789.png",
+                    Verified = true,
+                    ScannedDate = DateTime.UtcNow.AddHours(-12)
+                };
+                GetSet.Insert(upload3);
             }
         }
-
     }
 
 
@@ -153,12 +231,10 @@ namespace Resume_QR_Code_Verification_System.Server
             catch (Exception ex)
             {
                 Console.WriteLine($"Error retrieving {typeof(T).Name} with ID {id}: {ex.Message}");
-                return null;
+                return new T();
             }
         }
 
-        //public static List<Upload> GetAll(Upload _) => GetAll<Upload>();
-        //public static List<User> GetAll(User _) => GetAll<User>();
         public static List<T> GetAll<T>() where T : class, new()
         {
             try
@@ -174,7 +250,6 @@ namespace Resume_QR_Code_Verification_System.Server
                 return new List<T>();
             }
         }
-
 
     }
 }

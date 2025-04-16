@@ -45,6 +45,15 @@
     box-sizing: border-box;
 }
 
+.company-dropdown {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
 .drop-zone-container {
     width: 100%;
     padding: 2px;

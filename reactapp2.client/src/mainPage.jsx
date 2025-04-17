@@ -12,7 +12,7 @@ export function App() {
     const handleLogin = async (username, password) => {
         setErrorMessage(null); 
         try {
-            const API_URL = 'https://localhost:7219/api/auth/login';
+            const API_URL = 'https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/auth/login';
             const response = await axios.post(API_URL, {
                 Username: username,
                 Password: password

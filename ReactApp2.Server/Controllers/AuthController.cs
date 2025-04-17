@@ -8,10 +8,19 @@ using static SQLite.SQLite3;
 namespace Resume_QR_Code_Verification_System.Server.Controller
 {
     
+
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly IGetSet _getSet;
+
+        public AuthController(IGetSet getSet)
+        {
+            _getSet = getSet;
+        }
+
+
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserLoginDto loginDto)
         {
@@ -31,7 +40,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
 
 
                 // Find user
-                var user = GetSet.GetAll<User>()
+                var user = _getSet.GetAll<User>()
                     .FirstOrDefault(u => u.Username == loginDto.Username);
 
 
@@ -72,7 +81,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             try
             {
                 // Check if username exists
-                var existingUser = GetSet.GetAll<User>()
+                var existingUser = _getSet.GetAll<User>()
                     .FirstOrDefault(u => u.Username == registerDto.Username);
 
                 if (existingUser != null)
@@ -88,7 +97,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                 };
 
                 // Save to database
-                var success = GetSet.Insert(newUser);
+                var success = _getSet.Insert(newUser);
                 //Console.WriteLine(success);
 
                 return success ? CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser)
@@ -109,7 +118,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         [HttpGet("users/{id}")]
         public IActionResult GetUserById(int id)
         {
-            var user = GetSet.GetById<User>(id);
+            var user = _getSet.GetById<User>(id);
             if (user == null) return NotFound();
             return Ok(user);
         }

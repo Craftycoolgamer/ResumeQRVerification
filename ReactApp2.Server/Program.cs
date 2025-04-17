@@ -31,14 +31,15 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+builder.Services.AddSingleton<IGetSet, GetSet>();
 builder.Services.AddSingleton<DbService>();
-
 
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
@@ -89,3 +90,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles(); // For serving uploaded files
 
 app.Run();
+
+
+public partial class Program { }

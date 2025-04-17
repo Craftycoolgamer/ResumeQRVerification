@@ -29,14 +29,16 @@ const DataDisplayArea = () => {
     const [newUsername, setNewUsername] = useState('');
     const [newPassword, setNewPassword] = useState('');
 
-
+    //https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net
     //TODO: use the filename for qrcode instead of id, then when scanned get the id then use the axios put id
 
     useEffect(() => {
         const fetchData = async () => {
 
             try {
-                const response = await axios.get('https://localhost:7219/api/resumes');
+                //const response = await axios.get('https://localhost:7219/api/resumes');
+                const response = await axios.get('https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/resumes');
+
                 const result = response.data; // Axios automatically parses JSON
 
                 // Map backend fields to frontend display
@@ -61,7 +63,7 @@ const DataDisplayArea = () => {
 
         const fetchCompanies = async () => {
             try {
-                const response = await axios.get('https://localhost:7219/api/companies');
+                const response = await axios.get('https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/companies');
                 setCompanies(response.data);
             } catch (error) {
                 alert('Failed to load companies: ' + error.message);
@@ -70,7 +72,7 @@ const DataDisplayArea = () => {
 
         const fetchUsers = async () => {
             try {
-                const response = await axios.get('https://localhost:7219/api/users');
+                const response = await axios.get('https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/users');
                 setUsers(response.data);
             } catch (error) {
                 alert('Failed to load companies: ' + error.message);
@@ -108,11 +110,11 @@ const DataDisplayArea = () => {
         if (!result) return;
 
         try {
-            // Extract ID from URL format: https://localhost:7219/api/verify/id
+            // Extract ID from URL format: https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/verify/id
             const url = new URL(result);
             const id = url.pathname.split('/').pop();
 
-            await axios.put(`https://localhost:7219/api/verify/${id}`);
+            await axios.put(`https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/verify/${id}`);
 
             setData(data.map(item =>
                 item.id === parseInt(id) ? { ...item, verified: true } : item
@@ -129,7 +131,7 @@ const DataDisplayArea = () => {
     const handleDownload = async (id, fileName) => {
         try {
             const response = await axios.get(
-                `https://localhost:7219/api/download/${id}`,
+                `https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/download/${id}`,
                 { responseType: 'blob' }
             );
 
@@ -149,7 +151,7 @@ const DataDisplayArea = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this resume?')) {
             try {
-                await axios.delete(`https://localhost:7219/api/delete/${id}`);
+                await axios.delete(`https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/delete/${id}`);
                 setData(data.filter(item => item.id !== id));
             } catch (error) {
                 alert('Delete failed: ' + error.message);
@@ -165,7 +167,7 @@ const DataDisplayArea = () => {
     const handleUpdate = async () => {
         try {
             await axios.put(
-                `https://localhost:7219/api/update/${editingItem.id}`,
+                `https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/update/${editingItem.id}`,
                 { description: editDescription }
             );
 
@@ -180,7 +182,7 @@ const DataDisplayArea = () => {
 
     const handleView = async (id) => {
         try {
-            const response = await axios.get(`https://localhost:7219/api/preview/${id}`, {
+            const response = await axios.get(`https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/preview/${id}`, {
                 responseType: 'blob'
             });
 
@@ -212,13 +214,13 @@ const DataDisplayArea = () => {
             let response;
             if (selectedCompany) {
                 response = await axios.put(
-                    `https://localhost:7219/api/company/${selectedCompany.id}`,
+                    `https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/company/${selectedCompany.id}`,
                     companyData
                 );
                 setCompanies(companies.map(c => c.id === selectedCompany.id ? response.data : c));
             } else {
                 response = await axios.post(
-                    'https://localhost:7219/api/companies',
+                    'https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/companies',
                     companyData
                 );
                 setCompanies([...companies, response.data]);
@@ -252,13 +254,13 @@ const DataDisplayArea = () => {
             let response;
             if (selectedUser) {
                 response = await axios.put(
-                    `https://localhost:7219/api/user/${selectedUser.id}`,
+                    `https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/user/${selectedUser.id}`,
                     userData
                 );
                 setUsers(users.map(c => c.id === selectedUser.id ? response.data : c));
             } else {
                 response = await axios.post(
-                    'https://localhost:7219/api/auth/register',
+                    'https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/auth/register',
                     userData
                 );
                 setUsers([...users, response.data]);
@@ -584,7 +586,7 @@ const DataDisplayArea = () => {
                                 onClick={async () => {
                                     if (window.confirm(`Delete ${selectedCompany.companyName}?`)) {
                                         try {
-                                            await axios.delete(`https://localhost:7219/api/company/${selectedCompany.id}`);
+                                            await axios.delete(`https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/company/${selectedCompany.id}`);
                                             setCompanies(companies.filter(c => c.id !== selectedCompany.id));
                                             setSelectedCompany(null);
                                             setNewCompanyName('');
@@ -661,7 +663,7 @@ const DataDisplayArea = () => {
                                 onClick={async () => {
                                     if (window.confirm(`Delete ${selectedUser.username}?`)) {
                                         try {
-                                            await axios.delete(`https://localhost:7219/api/user/${selectedUser.id}`);
+                                            await axios.delete(`https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/user/${selectedUser.id}`);
                                             setUsers(users.filter(c => c.id !== selectedUser.id));
                                             setSelectedUser(null);
                                             setNewUsername('');

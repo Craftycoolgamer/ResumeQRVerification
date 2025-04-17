@@ -19,7 +19,7 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7219;http://localhost:5197"
+      "applicationUrl": "https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net;http://localhost:5197"
     },
     "IIS Express": {
       "commandName": "IISExpress",

@@ -9,12 +9,14 @@ namespace Resume_QR_Code_Verification_System.Server
 {
     public class DbService
     {
+        private readonly IGetSet _getSet;
         private readonly IConfiguration _config;
         public static string? UploadPath { get; set; }
         public static string? DBPath { get; set; }
 
-        public DbService(IConfiguration config, IWebHostEnvironment env)
+        public DbService(IConfiguration config, IWebHostEnvironment env, IGetSet getSet)
         {
+            _getSet = getSet;
             _config = config;
             UploadPath = _config["FileStorage:Path"] ?? Path.Combine(Directory.GetCurrentDirectory(), "app_data");
 
@@ -50,28 +52,28 @@ namespace Resume_QR_Code_Verification_System.Server
             }
         }
 
-        public static void SeedTestData()
+        public void SeedTestData()
         {
             // Seed Companies if empty
-            if (!GetSet.GetAll<Company>().Any())
+            if (!_getSet.GetAll<Company>().Any())
             {
                 var company1 = new Company
                 {
                     CompanyName = "Tech Innovators Inc.",
                     Description = "Leading technology solutions provider"
                 };
-                GetSet.Insert(company1);
+                _getSet.Insert(company1);
 
                 var company2 = new Company
                 {
                     CompanyName = "Digital Future Ltd.",
                     Description = "Digital transformation specialists"
                 };
-                GetSet.Insert(company2);
+                _getSet.Insert(company2);
             }
 
             // Seed Users if empty
-            if (!GetSet.GetAll<User>().Any())
+            if (!_getSet.GetAll<User>().Any())
             {
                 var user1 = new User
                 {
@@ -79,7 +81,7 @@ namespace Resume_QR_Code_Verification_System.Server
                     Username = "john.doe",
                     PasswordHash = BC.HashPassword("test123", BC.GenerateSalt(12))
                 };
-                GetSet.Insert(user1);
+                _getSet.Insert(user1);
 
                 var user2 = new User
                 {
@@ -87,7 +89,7 @@ namespace Resume_QR_Code_Verification_System.Server
                     Username = "jane.smith",
                     PasswordHash = BC.HashPassword("test123", BC.GenerateSalt(12))
                 };
-                GetSet.Insert(user2);
+                _getSet.Insert(user2);
 
                 var user3 = new User
                 {
@@ -95,7 +97,7 @@ namespace Resume_QR_Code_Verification_System.Server
                     Username = "mike.jones",
                     PasswordHash = BC.HashPassword("test123", BC.GenerateSalt(12))
                 };
-                GetSet.Insert(user3);
+                _getSet.Insert(user3);
 
                 var user4 = new User
                 {
@@ -103,11 +105,11 @@ namespace Resume_QR_Code_Verification_System.Server
                     Username = "test",
                     PasswordHash = BC.HashPassword("test", BC.GenerateSalt(12))
                 };
-                GetSet.Insert(user4);
+                _getSet.Insert(user4);
             }
 
             // Seed Uploads if empty
-            if (!GetSet.GetAll<Upload>().Any())
+            if (!_getSet.GetAll<Upload>().Any())
             {
                 // Resume Upload
                 var upload1 = new ResumeUpload 
@@ -123,7 +125,7 @@ namespace Resume_QR_Code_Verification_System.Server
                     Verified = true,
                     ScannedDate = DateTime.UtcNow.AddDays(-2)
                 };
-                GetSet.Insert(upload1);
+                _getSet.Insert(upload1);
 
                 // DOCX Resume
                 var upload2 = new ResumeUpload 
@@ -138,7 +140,7 @@ namespace Resume_QR_Code_Verification_System.Server
                     FilePath = "/uploads/resumes/def456.docx",
                     Verified = false
                 };
-                GetSet.Insert(upload2);
+                _getSet.Insert(upload2);
 
                 // Image Upload (if applicable)
                 var upload3 = new ImageUpload 
@@ -154,16 +156,16 @@ namespace Resume_QR_Code_Verification_System.Server
                     Verified = true,
                     ScannedDate = DateTime.UtcNow.AddHours(-12)
                 };
-                GetSet.Insert(upload3);
+                _getSet.Insert(upload3);
             }
         }
     }
 
+    
 
-
-    public class GetSet
+    public class GetSet : IGetSet
     {
-        public static bool Insert<TEntity>(TEntity entity) where TEntity : class
+        public bool Insert<TEntity>(TEntity entity) where TEntity : class
         {
             try
             {
@@ -180,7 +182,7 @@ namespace Resume_QR_Code_Verification_System.Server
             }
         }
 
-        public static bool Update<TEntity>(TEntity entity) where TEntity : class
+        public bool Update<TEntity>(TEntity entity) where TEntity : class
         {
             try
             {
@@ -197,7 +199,7 @@ namespace Resume_QR_Code_Verification_System.Server
             }
         }
 
-        public static bool Delete<TEntity>(int id) where TEntity : class, new()
+        public bool Delete<TEntity>(int id) where TEntity : class, new()
         {
             try
             {
@@ -219,7 +221,7 @@ namespace Resume_QR_Code_Verification_System.Server
             }
         }
 
-        public static T GetById<T>(int id) where T : class, new()
+        public T GetById<T>(int id) where T : class, new()
         {
             try
             {
@@ -235,7 +237,7 @@ namespace Resume_QR_Code_Verification_System.Server
             }
         }
 
-        public static List<T> GetAll<T>() where T : class, new()
+        public List<T> GetAll<T>() where T : class, new()
         {
             try
             {

@@ -15,10 +15,17 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
     [Route("api/")]
     public class UploadController : ControllerBase
     {
+        private readonly IGetSet _getSet;
+
+        public UploadController(IGetSet getSet)
+        {
+            _getSet = getSet;
+        }
+
         //for testing only
         //[HttpGet("test")]
         //public string Get() => "Hello world";
-        
+
         //Post
         [HttpPost("resumes")]
         [RequestSizeLimit(50_000_000)] // 50MB max
@@ -74,7 +81,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                     return BadRequest(new { success = false, error = "Invalid file type" });
                 }
 
-                var success = GetSet.Insert(newUpload);
+                var success = _getSet.Insert(newUpload);
 
 
                 // Save file
@@ -118,7 +125,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
                 Description = dto.Description
             };
 
-            var result = GetSet.Insert(newCompany);
+            var result = _getSet.Insert(newCompany);
             return result ? CreatedAtAction(nameof(GetCompanyById), new { id = newCompany.Id }, newCompany)
                           : StatusCode(500, "Failed to create company");
         }
@@ -128,28 +135,28 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         [HttpGet("resumes")]
         public IActionResult GetAllResumes()
         {
-            var uploads = GetSet.GetAll<Upload>();
+            var uploads = _getSet.GetAll<Upload>();
             return Ok(uploads);
         }
 
         [HttpGet("companies")]
         public IActionResult GetAllCompanies()
         {
-            var companies = GetSet.GetAll<Company>();
+            var companies = _getSet.GetAll<Company>();
             return Ok(companies);
         }
 
         [HttpGet("users")]
         public IActionResult GetAllUsers()
         {
-            var users = GetSet.GetAll<User>();
+            var users = _getSet.GetAll<User>();
             return Ok(users);
         }
 
         [HttpGet("companies/{id}")]
         public IActionResult GetCompanyById(int id)
         {
-            var company = GetSet.GetById<Company>(id);
+            var company = _getSet.GetById<Company>(id);
             if (company == null) return NotFound();
             return Ok(company);
         }
@@ -160,7 +167,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
             try
             {
                 // Get the upload record
-                var upload = GetSet.GetById<Upload>(id);
+                var upload = _getSet.GetById<Upload>(id);
                 if (upload == null) return NotFound("File record not found");
 
                 // Verify physical file exists
@@ -189,7 +196,7 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         {
             try
             {
-                var upload = GetSet.GetById<Upload>(id);
+                var upload = _getSet.GetById<Upload>(id);
                 if (upload == null) return NotFound("File record not found");
 
                 if (!System.IO.File.Exists(upload.FilePath))
@@ -216,11 +223,11 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         {
             try
             {
-                var upload = GetSet.GetById<Upload>(id);
+                var upload = _getSet.GetById<Upload>(id);
                 if (upload == null) return NotFound("File not found");
 
                 // Delete database record
-                bool dbSuccess = GetSet.Delete<Upload>(id);
+                bool dbSuccess = _getSet.Delete<Upload>(id);
 
                 // Delete physical file
                 if (System.IO.File.Exists(upload.FilePath))
@@ -247,10 +254,10 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         {
             //TODO: when deleting company, should also delete any resumes and users associated with it
 
-            var company = GetSet.GetById<Company>(id);
+            var company = _getSet.GetById<Company>(id);
             if (company == null) return NotFound();
 
-            var result = GetSet.Delete<Company>(id);
+            var result = _getSet.Delete<Company>(id);
             //Console.WriteLine(result);
             return result ? NoContent() : StatusCode(500, "Failed to delete Company");
         }
@@ -258,10 +265,10 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         [HttpDelete("user/{id}")]
         public IActionResult DeleteUser(int id)
         {
-            var user = GetSet.GetById<User>(id);
+            var user = _getSet.GetById<User>(id);
             if (user == null) return NotFound();
 
-            var result = GetSet.Delete<User>(id);
+            var result = _getSet.Delete<User>(id);
             Console.WriteLine(result);
             return result ? NoContent() : StatusCode(500, "Failed to delete User");
         }
@@ -273,13 +280,13 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         {
             try
             {
-                var upload = GetSet.GetById<Upload>(id);
+                var upload = _getSet.GetById<Upload>(id);
                 if (upload == null) return NotFound("File not found");
 
                 // Update only allowed fields
                 upload.Description = dto.Description;
 
-                bool success = GetSet.Update(upload);
+                bool success = _getSet.Update(upload);
                 return success ? Ok(new { success = true })
                               : StatusCode(500, new { success = false });
             }
@@ -299,12 +306,12 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         {
             try
             {
-                var upload = GetSet.GetById<Upload>(id);
+                var upload = _getSet.GetById<Upload>(id);
                 if (upload == null) return NotFound("File not found");
 
                 upload.Verified = true;
                 upload.ScannedDate = DateTime.UtcNow;
-                bool success = GetSet.Update(upload);
+                bool success = _getSet.Update(upload);
 
                 return success ? Ok(new { success = true })
                               : StatusCode(500, new { success = false });
@@ -323,13 +330,13 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         [HttpPut("company/{id}")]
         public IActionResult UpdateCompany(int id, [FromBody] CompanyUpdateDto dto)
         {
-            var existingCompany = GetSet.GetById<Company>(id);
+            var existingCompany = _getSet.GetById<Company>(id);
             if (existingCompany == null) return NotFound();
 
             existingCompany.CompanyName = dto.CompanyName;
             existingCompany.Description = dto.Description;
 
-            var result = GetSet.Update(existingCompany);
+            var result = _getSet.Update(existingCompany);
             return result ? Ok(existingCompany) : StatusCode(500, "Failed to update company");
         }
 
@@ -338,13 +345,13 @@ namespace Resume_QR_Code_Verification_System.Server.Controller
         {
             //TODO: only update if user enters correct old password
 
-            var existingUser = GetSet.GetById<User>(id);
+            var existingUser = _getSet.GetById<User>(id);
             if (existingUser == null) return NotFound();
 
             existingUser.Username = dto.Username;
             existingUser.PasswordHash = BC.HashPassword(dto.Password, BC.GenerateSalt(12));
 
-            var result = GetSet.Update(existingUser);
+            var result = _getSet.Update(existingUser);
             return result ? Ok(existingUser) : StatusCode(500, "Failed to update company");
         }
 

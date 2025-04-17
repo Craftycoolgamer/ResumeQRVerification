@@ -51,7 +51,7 @@ const FileUploadDropArea = () => {
     useEffect(() => {
         const fetchCompanies = async () => {
             try {
-                const response = await axios.get('https://localhost:7219/api/companies');
+                const response = await axios.get('https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/companies');
                 setCompanies(response.data);
             } catch (error) {
                 alert('Failed to load companies: ' + error.message);
@@ -63,7 +63,7 @@ const FileUploadDropArea = () => {
 
     const handleUpload = async () => {
         //testing only
-        //axios.get('https://localhost:7219/test')
+        //axios.get('https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/test')
         //    .then(r => console.log(r.data))
 
         if (!file || !selectedCompany || !name) {
@@ -85,7 +85,7 @@ const FileUploadDropArea = () => {
             setUploadProgress(0);
 
             // Send data to backend (matches UploadCreateDto structure)
-            const API_URL = 'https://localhost:7219/api/resumes'; 
+            const API_URL = 'https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/resumes'; 
             const response = await axios.post(API_URL, uploadData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
                 onUploadProgress: (progressEvent) => {
@@ -95,7 +95,7 @@ const FileUploadDropArea = () => {
 
             // Generate QR code after successful upload
             const qrCodeDataURL = await QRCode.toDataURL(
-                `https://localhost:7219/api/verify/${response.data.id}`
+                `https://resumeqrcodeverificationsystem-gbezd9awfdbtgyf4.westus-01.azurewebsites.net/api/verify/${response.data.id}`
             );
 
             // Create download link

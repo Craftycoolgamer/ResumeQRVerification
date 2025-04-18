@@ -1,0 +1,25 @@
+C:\Users\crafty\Desktop\D424\bin\Debug\Resume QR Code Verification System.Server.deps.json
+C:\Users\crafty\Desktop\D424\bin\Debug\Resume QR Code Verification System.Server.runtimeconfig.json
+C:\Users\crafty\Desktop\D424\bin\Debug\spa.proxy.json
+C:\Users\crafty\Desktop\D424\bin\Debug\appsettings.Development.json
+C:\Users\crafty\Desktop\D424\bin\Debug\appsettings.json
+C:\Users\crafty\Desktop\D424\bin\Debug\Resume QR Code Verification System.Server.staticwebassets.endpoints.json
+C:\Users\crafty\Desktop\D424\bin\Debug\Resume QR Code Verification System.Server.exe
+C:\Users\crafty\Desktop\D424\bin\Debug\Resume QR Code Verification System.Server.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\BCrypt.Net-Next.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\SQLite-net.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\Microsoft.Extensions.Options.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\System.Text.Json.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\Microsoft.Extensions.Primitives.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\Microsoft.OpenApi.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\System.IO.Pipelines.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\System.Text.Encodings.Web.dll
+C:\Users\crafty\Desktop\D424\bin\Debug\Resume QR Code Verification System.Server.pdb
+C:\Users\crafty\Desktop\D424\obj\Debug\docker-compose.dcproj.AssemblyReference.cache
+C:\Users\crafty\Desktop\D424\obj\Debug\docker-compose.dcproj.CoreCompileInputs.cache
+C:\Users\crafty\Desktop\D424\obj\Debug\docker-c.35A3FFBA.Up2Date

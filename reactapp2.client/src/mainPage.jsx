@@ -54,7 +54,7 @@ export function App() {
     return (
         <>
             <header className="header">
-                <div className="Logo">Company Logo</div>
+                <div className="Logo">Resume QR Code Verification System</div>
                 <button className="login-button" onClick={() => {
                     if (isLoggedIn) {
                         handleLogout();

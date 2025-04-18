@@ -3,36 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\crafty\\Desktop\\D424\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FC1539F1-CBD6-4DF0-B57A-5100664860A1}|TestProject\\TestProject.csproj|c:\\users\\crafty\\desktop\\d424\\testproject\\apiintegrationtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FC1539F1-CBD6-4DF0-B57A-5100664860A1}|TestProject\\TestProject.csproj|solutionrelative:testproject\\apiintegrationtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\Resume QR Code Verification System.client.esproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.client\\src\\mainpage.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\Resume QR Code Verification System.client.esproj|solutionrelative:reactapp2.client\\src\\mainpage.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FC1539F1-CBD6-4DF0-B57A-5100664860A1}|TestProject\\TestProject.csproj|c:\\users\\crafty\\desktop\\d424\\testproject\\uploadcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FC1539F1-CBD6-4DF0-B57A-5100664860A1}|TestProject\\TestProject.csproj|solutionrelative:testproject\\uploadcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B698504F-BC6D-45C6-B51A-DE7AD054520B}|ReactApp2.Server\\Resume QR Code Verification System.Server.csproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.server\\database.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B698504F-BC6D-45C6-B51A-DE7AD054520B}|ReactApp2.Server\\Resume QR Code Verification System.Server.csproj|solutionrelative:reactapp2.server\\database.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\Resume QR Code Verification System.client.esproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.client\\src\\main.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\Resume QR Code Verification System.client.esproj|solutionrelative:reactapp2.client\\src\\main.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B698504F-BC6D-45C6-B51A-DE7AD054520B}|ReactApp2.Server\\Resume QR Code Verification System.Server.csproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.server\\controllers\\uploadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B698504F-BC6D-45C6-B51A-DE7AD054520B}|ReactApp2.Server\\Resume QR Code Verification System.Server.csproj|solutionrelative:reactapp2.server\\controllers\\uploadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B698504F-BC6D-45C6-B51A-DE7AD054520B}|ReactApp2.Server\\Resume QR Code Verification System.Server.csproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.server\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B698504F-BC6D-45C6-B51A-DE7AD054520B}|ReactApp2.Server\\Resume QR Code Verification System.Server.csproj|solutionrelative:reactapp2.server\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B698504F-BC6D-45C6-B51A-DE7AD054520B}|ReactApp2.Server\\Resume QR Code Verification System.Server.csproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.server\\igetset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B698504F-BC6D-45C6-B51A-DE7AD054520B}|ReactApp2.Server\\Resume QR Code Verification System.Server.csproj|solutionrelative:reactapp2.server\\igetset.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FC1539F1-CBD6-4DF0-B57A-5100664860A1}|TestProject\\TestProject.csproj|c:\\users\\crafty\\desktop\\d424\\testproject\\authcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FC1539F1-CBD6-4DF0-B57A-5100664860A1}|TestProject\\TestProject.csproj|solutionrelative:testproject\\authcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B698504F-BC6D-45C6-B51A-DE7AD054520B}|ReactApp2.Server\\Resume QR Code Verification System.Server.csproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B698504F-BC6D-45C6-B51A-DE7AD054520B}|ReactApp2.Server\\Resume QR Code Verification System.Server.csproj|solutionrelative:reactapp2.server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\Resume QR Code Verification System.client.esproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.client\\src\\fileupload.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\Resume QR Code Verification System.client.esproj|solutionrelative:reactapp2.client\\src\\fileupload.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,86 +26,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 474,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "UploadController.cs",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Controllers\\UploadController.cs",
-              "RelativeDocumentMoniker": "ReactApp2.Server\\Controllers\\UploadController.cs",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Controllers\\UploadController.cs",
-              "RelativeToolTip": "ReactApp2.Server\\Controllers\\UploadController.cs",
-              "ViewState": "AgIAAMcAAAAAAAAAAAAcwOEAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T22:44:42.005Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IGetSet.cs",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\IGetSet.cs",
-              "RelativeDocumentMoniker": "ReactApp2.Server\\IGetSet.cs",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\IGetSet.cs",
-              "RelativeToolTip": "ReactApp2.Server\\IGetSet.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T22:35:35.569Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Program.cs",
-              "RelativeDocumentMoniker": "ReactApp2.Server\\Program.cs",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Program.cs",
-              "RelativeToolTip": "ReactApp2.Server\\Program.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T22:33:17.192Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "ReactApp2.Server\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "ReactApp2.Server\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAIwDcAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T22:32:19.15Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Database.cs",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Database.cs",
-              "RelativeDocumentMoniker": "ReactApp2.Server\\Database.cs",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Database.cs",
-              "RelativeToolTip": "ReactApp2.Server\\Database.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAcwEsAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T22:31:26.282Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UploadControllerTests.cs",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\UploadControllerTests.cs",
-              "RelativeDocumentMoniker": "TestProject\\UploadControllerTests.cs",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\UploadControllerTests.cs",
-              "RelativeToolTip": "TestProject\\UploadControllerTests.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAwwCcAAABBAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T22:30:19.93Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -132,29 +38,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "AuthControllerTests.cs",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\AuthControllerTests.cs",
-              "RelativeDocumentMoniker": "TestProject\\AuthControllerTests.cs",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\AuthControllerTests.cs",
-              "RelativeToolTip": "TestProject\\AuthControllerTests.cs",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAwwBMAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T22:20:45.443Z",
+              "DocumentIndex": 0,
+              "Title": "mainPage.jsx",
+              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\mainPage.jsx",
+              "RelativeDocumentMoniker": "reactapp2.client\\src\\mainPage.jsx",
+              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\mainPage.jsx",
+              "RelativeToolTip": "reactapp2.client\\src\\mainPage.jsx",
+              "ViewState": "AgIAACYAAAAAAAAAAAAQwDgAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-04-18T08:20:43.84Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ApiIntegrationTests.cs",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\ApiIntegrationTests.cs",
-              "RelativeDocumentMoniker": "TestProject\\ApiIntegrationTests.cs",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\ApiIntegrationTests.cs",
-              "RelativeToolTip": "TestProject\\ApiIntegrationTests.cs",
-              "ViewState": "AgIAADsAAAAAAAAAAAAuwFsAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T22:30:43.742Z",
+              "DocumentIndex": 1,
+              "Title": "main.jsx",
+              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\main.jsx",
+              "RelativeDocumentMoniker": "reactapp2.client\\src\\main.jsx",
+              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\main.jsx",
+              "RelativeToolTip": "reactapp2.client\\src\\main.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-04-18T08:20:41.102Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UploadController.cs",
+              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Controllers\\UploadController.cs",
+              "RelativeDocumentMoniker": "ReactApp2.Server\\Controllers\\UploadController.cs",
+              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Controllers\\UploadController.cs",
+              "RelativeToolTip": "ReactApp2.Server\\Controllers\\UploadController.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAQwCUAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-17T23:39:03.174Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "fileUpload.jsx",
+              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\fileUpload.jsx",
+              "RelativeDocumentMoniker": "reactapp2.client\\src\\fileUpload.jsx",
+              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\fileUpload.jsx",
+              "RelativeToolTip": "reactapp2.client\\src\\fileUpload.jsx",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-04-17T23:38:44.082Z"
             }
           ]
         }

@@ -1,0 +1,24 @@
+{
+  "Version": 1,
+  "Hash": "P1XyRexxtv+fEtuEiewQuN3/j3Q49FxPkiRZ2ocFs90=",
+  "Source": "Resume QR Code Verification System.Server",
+  "BasePath": "_content/Resume QR Code Verification System.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\Resume QR Code Verification System.client.esproj",
+      "Version": 2,
+      "Source": "Resume QR Code Verification System.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Release;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Release;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

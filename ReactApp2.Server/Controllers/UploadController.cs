@@ -8,6 +8,12 @@ using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using BC = BCrypt.Net.BCrypt;
 
+//TODO: deleting a company does not delete the associated resumes and users
+//      users cannot select what company they are assigned to
+//      need a more gracefull way of displaying errors if there is no file in the database to view/download
+//      just do better error messages
+
+
 namespace Resume_QR_Code_Verification_System.Server.Controller
 {
     //[Authorize]

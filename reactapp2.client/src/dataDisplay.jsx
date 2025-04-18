@@ -12,6 +12,11 @@ const DataDisplayArea = () => {
     const [editDescription, setEditDescription] = useState('');
     const [previewUrl, setPreviewUrl] = useState(null);
     const [scanning, setScanning] = useState(false);
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+    const currentDate = month + "/" + date + "/" + year;
 
     const [showReportsDropdown, setShowReportsDropdown] = useState(false);
     const [reportType, setReportType] = useState(null);
@@ -422,7 +427,7 @@ const DataDisplayArea = () => {
                             </div>
                             <div className="header-cell"></div>
                             <div className="header-cell"></div>
-                            <div className="header-cell"></div>
+                            <div className="header-cell">{"Report run on: " + currentDate}</div>
                             <div className="header-cell counter">Resume Count</div>
                         </>
                     ) : (

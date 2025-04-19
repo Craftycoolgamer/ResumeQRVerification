@@ -447,7 +447,7 @@ const DataDisplayArea = () => {
                             </div>
                             <div className="header-cell"></div>
                             <div className="header-cell"></div>
-                            <div className="header-cell">{"Report run on: " + currentDate}</div>
+                            <div className="header-cell">{reportType + " Report run on: " + currentDate}</div>
                             <div className="header-cell counter">Resume Count</div>
                         </>
                     ) : (

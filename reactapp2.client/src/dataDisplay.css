@@ -364,7 +364,9 @@ form-input {
     display: contents;
 }
 
-
+.header-cell::first-letter{
+    text-transform: capitalize;
+}
 
 
 

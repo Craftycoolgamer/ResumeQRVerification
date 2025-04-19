@@ -464,8 +464,8 @@ const DataDisplayArea = () => {
                 </div>
 
                 {reportType ? (
-                    filteredReportData.map((item) => (
-                        <div key={item} className="table-row">
+                    filteredReportData.map((item, value) => (
+                        <div key={value} className="table-row">
                             <div className="table-cell">
                                 {reportType === 'company' ? item.name :
                                 reportType === 'month' ? item.period :

@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\crafty\\Desktop\\D424\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\Resume QR Code Verification System.client.esproj|c:\\users\\crafty\\desktop\\d424\\reactapp2.client\\src\\datadisplay.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{D345D938-2616-DBB5-4EFA-1FF36651E74F}|reactapp2.client\\Resume QR Code Verification System.client.esproj|solutionrelative:reactapp2.client\\src\\datadisplay.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{FC1539F1-CBD6-4DF0-B57A-5100664860A1}|TestProject\\TestProject.csproj|c:\\users\\crafty\\desktop\\d424\\testproject\\authcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FC1539F1-CBD6-4DF0-B57A-5100664860A1}|TestProject\\TestProject.csproj|solutionrelative:testproject\\authcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -42,21 +46,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 474,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AuthControllerTests.cs",
-              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\AuthControllerTests.cs",
-              "RelativeDocumentMoniker": "TestProject\\AuthControllerTests.cs",
-              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\AuthControllerTests.cs",
-              "RelativeToolTip": "TestProject\\AuthControllerTests.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-18T21:04:19.466Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -67,7 +58,33 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "dataDisplay.jsx",
+              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\dataDisplay.jsx",
+              "RelativeDocumentMoniker": "reactapp2.client\\src\\dataDisplay.jsx",
+              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\dataDisplay.jsx",
+              "RelativeToolTip": "reactapp2.client\\src\\dataDisplay.jsx",
+              "ViewState": "AgIAALIBAAAAAAAAAAAAAMsBAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-04-18T22:04:56.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "AuthControllerTests.cs",
+              "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\AuthControllerTests.cs",
+              "RelativeDocumentMoniker": "TestProject\\AuthControllerTests.cs",
+              "ToolTip": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\AuthControllerTests.cs",
+              "RelativeToolTip": "TestProject\\AuthControllerTests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-18T21:04:19.466Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "ApiIntegrationTests.cs",
               "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\TestProject\\ApiIntegrationTests.cs",
               "RelativeDocumentMoniker": "TestProject\\ApiIntegrationTests.cs",
@@ -80,7 +97,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "ReactApp2.Server\\Controllers\\AuthController.cs",
@@ -92,7 +109,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Models\\User.cs",
               "RelativeDocumentMoniker": "ReactApp2.Server\\Models\\User.cs",
@@ -104,7 +121,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "mainPage.jsx",
               "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\mainPage.jsx",
               "RelativeDocumentMoniker": "reactapp2.client\\src\\mainPage.jsx",
@@ -116,7 +133,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "main.jsx",
               "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\main.jsx",
               "RelativeDocumentMoniker": "reactapp2.client\\src\\main.jsx",
@@ -128,7 +145,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "UploadController.cs",
               "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\ReactApp2.Server\\Controllers\\UploadController.cs",
               "RelativeDocumentMoniker": "ReactApp2.Server\\Controllers\\UploadController.cs",
@@ -141,7 +158,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "fileUpload.jsx",
               "DocumentMoniker": "C:\\Users\\crafty\\Desktop\\D424\\reactapp2.client\\src\\fileUpload.jsx",
               "RelativeDocumentMoniker": "reactapp2.client\\src\\fileUpload.jsx",

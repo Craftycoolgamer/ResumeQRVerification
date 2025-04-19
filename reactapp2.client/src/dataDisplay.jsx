@@ -107,6 +107,26 @@ const DataDisplayArea = () => {
         );
     });
 
+    // Filter data based on search term
+    const filteredReportData = reportData.filter(item => {
+        const lowerSearch = searchTerm.toLowerCase();
+
+        switch (reportType) {
+            case 'company':
+                return item.name.toLowerCase().includes(lowerSearch);
+            case 'month':
+                return item.period.toLowerCase().includes(lowerSearch);
+            case 'year':
+                return item.year.toString().includes(lowerSearch);
+            case 'fileType':
+                return item.type.toLowerCase().includes(lowerSearch);
+            default:
+                return true;
+        }
+    });
+
+
+
     const handleScan = () => {
         setScanning(true);
     };
@@ -444,8 +464,8 @@ const DataDisplayArea = () => {
                 </div>
 
                 {reportType ? (
-                    reportData.map((item, index) => (
-                        <div key={index} className="table-row">
+                    filteredReportData.map((item) => (
+                        <div key={item} className="table-row">
                             <div className="table-cell">
                                 {reportType === 'company' ? item.name :
                                 reportType === 'month' ? item.period :
